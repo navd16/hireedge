@@ -406,7 +406,11 @@ const CONFIG = {
 // ── USAGE TRACKING ──
 function getUsage() {
   const data = JSON.parse(localStorage.getItem('hireedge_usage') || '{"count":0,"reset":0}');
-  if (Date.now() - data.reset > 30 * 24 * 60 * 60 * 1000) return { count: 0, reset: Date.now() };
+  if (Date.now() - data.reset > 30 * 24 * 60 * 60 * 1000) {
+    const fresh = { count: 0, reset: Date.now() };
+    localStorage.setItem('hireedge_usage', JSON.stringify(fresh));
+    return fresh;
+  }
   return data;
 }
 function incrementUsage() {
@@ -508,7 +512,21 @@ function switchTab(name, el) {
 
 // ── GENERATE ──
 async function generate(type, toneOverride) {
-  if (!canGenerate()) { openPaywall(); return; }
+  if (!canGenerate()) {
+    document.getElementById(type + '-retry').classList.remove('visible');
+    openPaywall();
+    return;
+  }
+  // Increment usage immediately before API call
+  if (!isPro()) {
+    const { count } = getUsage();
+    if (count >= CONFIG.FREE_LIMIT && getSingleCredits() > 0) {
+      localStorage.setItem('hireedge_single_credits', (getSingleCredits() - 1).toString());
+    } else {
+      incrementUsage();
+    }
+  }
+  updateUsageDisplay();
 
   const btn = document.getElementById(type + '-btn');
   const output = document.getElementById(type + '-output');
@@ -558,16 +576,6 @@ async function generate(type, toneOverride) {
     const data = await res.json();
     const text = data.text || 'Something went wrong. Please try again.';
     loading.classList.remove('visible');
-    // Deduct credit: single credit first, then free usage
-    if (!isPro()) {
-      const { count } = getUsage();
-      if (count >= CONFIG.FREE_LIMIT && getSingleCredits() > 0) {
-        localStorage.setItem('hireedge_single_credits', (getSingleCredits() - 1).toString());
-      } else {
-        incrementUsage();
-      }
-    }
-    updateUsageDisplay();
     document.getElementById(type + '-retry').classList.add('visible');
     typewriter(textEl, text);
   } catch (err) {
@@ -591,7 +599,11 @@ function selectTone(el, type, tone) {
 }
 
 function retryGenerate(type) {
-  // Override tone for this generation
+  if (!canGenerate()) {
+    document.getElementById(type + '-retry').classList.remove('visible');
+    openPaywall();
+    return;
+  }
   const originalTone = retryTones[type];
   if (type === 'resume') {
     document.getElementById('r-tone').value = originalTone;
