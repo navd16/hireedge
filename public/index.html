@@ -7,7 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
 <style>
   :root {
-    --bg: #f9f7f4;
+    --bg: #ffffff;
     --surface: #ffffff;
     --surface2: #f3f0eb;
     --border: rgba(0,0,0,0.08);
@@ -33,7 +33,7 @@
   nav a:hover { color: var(--text); }
   .btn-nav { background: var(--navy); color: #fff !important; padding: 10px 22px; border-radius: 6px; font-weight: 500; font-size: 0.85rem !important; transition: background 0.2s, transform 0.15s !important; }
   .btn-nav:hover { background: #253d6a !important; transform: translateY(-1px); }
-  .hero { min-height: 88vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 80px 48px 60px; position: relative; overflow: hidden; background: linear-gradient(160deg, #f9f7f4 0%, #f0ebe0 100%); }
+  .hero { min-height: 88vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 80px 48px 60px; position: relative; overflow: hidden; background: linear-gradient(160deg, #ffffff 0%, #f5f5f5 100%); }
   .hero-glow { position: absolute; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(212,140,30,0.08) 0%, transparent 70%); top: 50%; left: 50%; transform: translate(-50%, -55%); pointer-events: none; }
   .hero-glow2 { position: absolute; width: 400px; height: 400px; border-radius: 50%; background: radial-gradient(circle, rgba(28,43,74,0.05) 0%, transparent 70%); bottom: 10%; right: 15%; pointer-events: none; }
   .eyebrow { display: inline-flex; align-items: center; gap: 8px; background: #fff; border: 1px solid var(--border); padding: 6px 16px; border-radius: 100px; font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--amber); margin-bottom: 32px; animation: fadeUp 0.6s ease both; box-shadow: var(--shadow); }
@@ -125,6 +125,15 @@
   @keyframes bounce { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-8px); } }
   @keyframes spin { to { transform: rotate(360deg); } }
   .spinner { width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.8s linear infinite; }
+
+  .retry-bar { display: none; margin-top: 16px; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .retry-bar.visible { display: flex; }
+  .retry-label { font-size: 0.8rem; color: var(--muted); flex-shrink: 0; }
+  .retry-tones { display: flex; gap: 8px; flex-wrap: wrap; flex: 1; }
+  .retry-tone { padding: 6px 14px; border-radius: 100px; font-size: 0.78rem; border: 1px solid var(--border); background: #fff; color: var(--muted); cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.2s; white-space: nowrap; }
+  .retry-tone:hover, .retry-tone.selected { border-color: var(--amber); color: var(--amber2); background: rgba(212,140,30,0.05); }
+  .retry-btn { background: var(--navy); color: #fff; padding: 7px 18px; border-radius: 7px; font-size: 0.82rem; font-weight: 500; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; white-space: nowrap; transition: background 0.2s; flex-shrink: 0; }
+  .retry-btn:hover { background: #253d6a; }
   @media (max-width: 768px) {
     header { padding: 20px 24px; } nav { display: none; } .hero { padding: 60px 24px 48px; } section { padding: 64px 24px; } .tool-wrapper { padding: 0 24px; } .form-grid { grid-template-columns: 1fr; } .pricing-grid { grid-template-columns: 1fr; } .hero-stats { gap: 32px; flex-wrap: wrap; justify-content: center; } footer { flex-direction: column; gap: 16px; padding: 32px 24px; text-align: center; }
   }
@@ -187,7 +196,7 @@
 <div class="hero">
   <div class="hero-glow"></div>
   <div class="hero-glow2"></div>
-  <div class="eyebrow">Powered by Claude AI</div>
+  <div class="eyebrow">Powered by AI</div>
   <h1>Land your <em>dream job</em><br/>in half the time</h1>
   <p class="hero-sub">AI-generated resumes, cover letters, and the best tools curated for job seekers — everything in one place.</p>
   <div class="hero-cta">
@@ -232,6 +241,17 @@
         <div class="loading-dots" id="resume-loading"><span></span><span></span><span></span></div>
         <div class="output-text" id="resume-text"></div>
       </div>
+      <div class="retry-bar" id="resume-retry">
+        <span class="retry-label">Not happy? Try a different tone:</span>
+        <div class="retry-tones">
+          <button class="retry-tone selected" onclick="selectTone(this,'resume','professional')">Professional</button>
+          <button class="retry-tone" onclick="selectTone(this,'resume','confident and bold')">Confident</button>
+          <button class="retry-tone" onclick="selectTone(this,'resume','warm and approachable')">Warm</button>
+          <button class="retry-tone" onclick="selectTone(this,'resume','executive and strategic')">Executive</button>
+          <button class="retry-tone" onclick="selectTone(this,'resume','concise and punchy')">Punchy</button>
+        </div>
+        <button class="retry-btn" onclick="retryGenerate('resume')">↻ Regenerate</button>
+      </div>
     </div>
 
     <!-- COVER LETTER TAB -->
@@ -249,6 +269,17 @@
         <div class="loading-dots" id="cover-loading"><span></span><span></span><span></span></div>
         <div class="output-text" id="cover-text"></div>
       </div>
+      <div class="retry-bar" id="cover-retry">
+        <span class="retry-label">Not happy? Try a different tone:</span>
+        <div class="retry-tones">
+          <button class="retry-tone selected" onclick="selectTone(this,'cover','professional')">Professional</button>
+          <button class="retry-tone" onclick="selectTone(this,'cover','enthusiastic and energetic')">Enthusiastic</button>
+          <button class="retry-tone" onclick="selectTone(this,'cover','concise and direct')">Concise</button>
+          <button class="retry-tone" onclick="selectTone(this,'cover','storytelling and personal')">Personal Story</button>
+          <button class="retry-tone" onclick="selectTone(this,'cover','bold and confident')">Bold</button>
+        </div>
+        <button class="retry-btn" onclick="retryGenerate('cover')">↻ Regenerate</button>
+      </div>
     </div>
 
     <!-- LINKEDIN TAB -->
@@ -265,6 +296,17 @@
         <div class="output-label">Generated LinkedIn Bio<button class="copy-btn" onclick="copyText('linkedin-text')">Copy</button></div>
         <div class="loading-dots" id="linkedin-loading"><span></span><span></span><span></span></div>
         <div class="output-text" id="linkedin-text"></div>
+      </div>
+      <div class="retry-bar" id="linkedin-retry">
+        <span class="retry-label">Not happy? Try a different tone:</span>
+        <div class="retry-tones">
+          <button class="retry-tone selected" onclick="selectTone(this,'linkedin','professional and results-driven')">Results-Driven</button>
+          <button class="retry-tone" onclick="selectTone(this,'linkedin','conversational and authentic')">Conversational</button>
+          <button class="retry-tone" onclick="selectTone(this,'linkedin','bold and thought-leadership-focused')">Thought Leader</button>
+          <button class="retry-tone" onclick="selectTone(this,'linkedin','concise and impactful')">Concise</button>
+          <button class="retry-tone" onclick="selectTone(this,'linkedin','warm and human')">Warm</button>
+        </div>
+        <button class="retry-btn" onclick="retryGenerate('linkedin')">↻ Regenerate</button>
       </div>
     </div>
   </div>
@@ -348,7 +390,7 @@
 
 <footer>
   <div class="footer-logo">HireEdge AI</div>
-  <div class="footer-copy">© 2026 HireEdge AI · Built with Claude · All rights reserved</div>
+  <div class="footer-copy">© 2026 HireEdge AI · All rights reserved</div>
 </footer>
 
 <script>
@@ -357,7 +399,7 @@ const CONFIG = {
   STRIPE_SINGLE_LINK: 'https://buy.stripe.com/YOUR_SINGLE_LINK',      // $2 single generation
   STRIPE_PACK_LINK: 'https://buy.stripe.com/YOUR_PACK_LINK',          // $9 one-time 30 days
   STRIPE_LIFETIME_LINK: 'https://buy.stripe.com/YOUR_LIFETIME_LINK',  // $79 one-time forever
-  FREE_LIMIT: 2,
+  FREE_LIMIT: 100,
   PACK_DAYS: 30,
 };
 
@@ -465,7 +507,7 @@ function switchTab(name, el) {
 }
 
 // ── GENERATE ──
-async function generate(type) {
+async function generate(type, toneOverride) {
   if (!canGenerate()) { openPaywall(); return; }
 
   const btn = document.getElementById(type + '-btn');
@@ -481,7 +523,7 @@ async function generate(type) {
     const skills = document.getElementById('r-skills').value || 'various skills';
     const achievements = document.getElementById('r-achievements').value || '';
     const target = document.getElementById('r-target').value || 'tech industry';
-    const tone = document.getElementById('r-tone').value;
+    const tone = toneOverride || document.getElementById('r-tone').value;
     prompt = `Write a compelling, ATS-optimized professional resume summary for a ${title} with ${exp} experience. Skills: ${skills}. Achievements: ${achievements}. Target: ${target}. Tone: ${tone}. Write 3-4 punchy sentences. No bullet points. Start with the job title. Results-focused. No headers or labels.`;
   }
   if (type === 'cover') {
@@ -526,6 +568,7 @@ async function generate(type) {
       }
     }
     updateUsageDisplay();
+    document.getElementById(type + '-retry').classList.add('visible');
     typewriter(textEl, text);
   } catch (err) {
     loading.classList.remove('visible');
@@ -535,6 +578,25 @@ async function generate(type) {
     const labels = { resume: 'Generate Resume Summary', cover: 'Generate Cover Letter', linkedin: 'Generate LinkedIn Bio' };
     btn.innerHTML = `<span>${labels[type]}</span>`;
   }
+}
+
+
+// ── RETRY ──
+const retryTones = { resume: 'professional', cover: 'professional', linkedin: 'professional and results-driven' };
+
+function selectTone(el, type, tone) {
+  document.querySelectorAll(`#${type}-retry .retry-tone`).forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  retryTones[type] = tone;
+}
+
+function retryGenerate(type) {
+  // Override tone for this generation
+  const originalTone = retryTones[type];
+  if (type === 'resume') {
+    document.getElementById('r-tone').value = originalTone;
+  }
+  generate(type, originalTone);
 }
 
 function typewriter(el, text) {
