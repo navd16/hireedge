@@ -740,6 +740,11 @@ const CONFIG = {
   PACK_DAYS: 30,
 };
 
+// ── AUTH STATE (declared early to avoid reference errors) ──
+var currentUser = null;
+var currentPlan = 'free';
+var pendingCheckoutPlan = null;
+
 // ── USAGE TRACKING ──
 function getUsage() {
   const data = JSON.parse(localStorage.getItem('hireedge_usage') || '{"count":0,"reset":0}');
@@ -761,8 +766,10 @@ function getSingleCredits() {
 
 // isPro: pack within 30 days or lifetime
 function isPro() {
-  // Check Supabase plan first
-  if (typeof currentUser !== 'undefined' && currentUser && (currentPlan === 'lifetime' || currentPlan === 'pack')) return true;
+  // Check Supabase plan (currentUser declared later, use try/catch to be safe)
+  try {
+    if (currentUser && (currentPlan === 'lifetime' || currentPlan === 'pack')) return true;
+  } catch(e) {}
   // Fallback to localStorage
   if (localStorage.getItem('hireedge_lifetime') === 'true') return true;
   const packDate = parseInt(localStorage.getItem('hireedge_pack_date') || '0');
@@ -807,14 +814,14 @@ updateUsageDisplay();
 
 // ── PAYWALL ──
 function openPaywall() {
-  if (typeof currentUser !== 'undefined' && !currentUser) { openAuth('signup', 'pack'); return; }
+  try { if (!currentUser) { openAuth('signup', 'pack'); return; } } catch(e) {}
   document.getElementById('paywall').classList.add('open');
 }
 function closePaywall() { document.getElementById('paywall').classList.remove('open'); }
 
 // ── STRIPE CHECKOUT ──
 function checkout(plan) {
-  if (typeof currentUser !== 'undefined' && !currentUser) { openAuth('signup', plan); return; }
+  try { if (!currentUser) { openAuth('signup', plan); return; } } catch(e) {}
   proceedToCheckout(plan);
 }
 function proceedToCheckout(plan) {
@@ -1148,9 +1155,6 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 let _supabase = null;
 function getSupabase() { if (!_supabase && window.supabase) _supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY); return _supabase; }
 
-let currentUser = null;
-let currentPlan = 'free';
-let pendingCheckoutPlan = null;
 
 async function initAuth() {
   const sb = getSupabase();
@@ -1195,17 +1199,20 @@ function updateHeaderAuth() {
   const area = document.getElementById('header-auth-area');
   if (!area) return;
   if (currentUser) {
-    const planLabel = currentPlan === 'lifetime' ? '✦ Lifetime' : currentPlan === 'pack' ? '✦ Pro' : '';
-    area.innerHTML = '<div class="header-user">' + (planLabel ? '<span class="header-plan-badge">' + planLabel + '</span>' : '') + '<span class="header-email">' + currentUser.email + '</span><button class="btn-signout" onclick="signOut()">Sign out</button></div>';
+    const planLabel = currentPlan === 'lifetime' ? '❆ Lifetime' : currentPlan === 'pack' ? '❆ Pro' : '';
+    const badge = planLabel ? '<span class="header-plan-badge">' + planLabel + '</span>' : '';
+    area.innerHTML = '<div class="header-user">' + badge + '<span class="header-email">' + currentUser.email + '</span><button class="btn-signout" onclick="signOut()">Sign out</button></div>';
   } else {
-    area.innerHTML = '<button class="btn-login-header" onclick="openAuth('login')">Log In</button>';
+    area.innerHTML = '<button class="btn-login-header" onclick="openAuthModal()">Log In</button>';
   }
 }
+
 
 // isPro handled by original function below
 
 let authMode = 'login';
 
+function openAuthModal() { openAuth('login'); }
 function openAuth(mode, planContext) {
   authMode = mode || 'login';
   const overlay = document.getElementById('auth-overlay');
@@ -1282,8 +1289,8 @@ async function signOut() {
 window.addEventListener('load', initAuth);
 
 // ── LEGAL PAGES ──
-const termsContent = '<div class="legal-h1">Terms of Service</div><div class="legal-date">Last updated: March 2026</div><div class="legal-h2">1. Acceptance</div><p class="legal-p">By using HireEdge AI you agree to these terms.</p><div class="legal-h2">2. Payments</div><p class="legal-p">One-time purchases: $2 single, $9 thirty-day pack, $79 lifetime. Processed by Stripe. No refunds once used. Contact support@hireedgeai.com for issues.</p><div class="legal-h2">3. Disclaimer</div><p class="legal-p">We do not guarantee employment outcomes. Review all generated content before use.</p><div class="legal-h2">4. Contact</div><p class="legal-p"><a href="mailto:support@hireedgeai.com" style="color:var(--amber)">support@hireedgeai.com</a></p>';
-const privacyContent = '<div class="legal-h1">Privacy Policy</div><div class="legal-date">Last updated: March 2026</div><div class="legal-h2">1. What We Collect</div><p class="legal-p">Email for account creation, content you submit, payment data via Stripe. We do not store card details.</p><div class="legal-h2">2. How We Use It</div><p class="legal-p">To generate content, process payments, and provide support. We never sell your data.</p><div class="legal-h2">3. Third Parties</div><p class="legal-p">Anthropic (AI), Stripe (payments), Supabase (auth), Netlify (hosting).</p><div class="legal-h2">4. Contact</div><p class="legal-p"><a href="mailto:support@hireedgeai.com" style="color:var(--amber)">support@hireedgeai.com</a></p>';
+const termsContent = `<div class="legal-h1">Terms of Service</div><div class="legal-date">Last updated: March 2026</div><div class="legal-h2">1. Acceptance</div><p class="legal-p">By using HireEdge AI you agree to these terms.</p><div class="legal-h2">2. Payments</div><p class="legal-p">One-time purchases: $2 single, $9 thirty-day pack, $79 lifetime. Processed by Stripe. No refunds once used. Contact support@hireedgeai.com for issues.</p><div class="legal-h2">3. Disclaimer</div><p class="legal-p">We do not guarantee employment outcomes. Review all generated content before use.</p><div class="legal-h2">4. Contact</div><p class="legal-p"><a href="mailto:support@hireedgeai.com" style="color:var(--amber)">support@hireedgeai.com</a></p>`;
+const privacyContent = `<div class="legal-h1">Privacy Policy</div><div class="legal-date">Last updated: March 2026</div><div class="legal-h2">1. What We Collect</div><p class="legal-p">Email for account creation, content you submit, payment data via Stripe. We do not store card details.</p><div class="legal-h2">2. How We Use It</div><p class="legal-p">To generate content, process payments, and provide support. We never sell your data.</p><div class="legal-h2">3. Third Parties</div><p class="legal-p">Anthropic (AI), Stripe (payments), Supabase (auth), Netlify (hosting).</p><div class="legal-h2">4. Contact</div><p class="legal-p"><a href="mailto:support@hireedgeai.com" style="color:var(--amber)">support@hireedgeai.com</a></p>`;
 
 function showPage(type) { document.getElementById('legal-content').innerHTML = type === 'terms' ? termsContent : privacyContent; document.getElementById('legal-overlay').style.display = 'block'; window.scrollTo(0,0); return false; }
 function hidePage() { document.getElementById('legal-overlay').style.display = 'none'; }
