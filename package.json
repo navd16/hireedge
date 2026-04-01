@@ -1,11 +1,8 @@
 {
   "name": "hireedge-ai",
   "version": "1.0.0",
-  "description": "AI-powered job hunting micro-SaaS",
   "dependencies": {
-    "stripe": "^14.0.0"
-  },
-  "engines": {
-    "node": ">=18"
+    "stripe": "^14.0.0",
+    "@supabase/supabase-js": "^2.0.0"
   }
 }

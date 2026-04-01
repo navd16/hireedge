@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>HireEdge AI — Land Your Dream Job Faster</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   :root {
     --bg: #ffffff;
@@ -176,6 +177,42 @@
   .legal-p { color: var(--text); font-size: 0.92rem; line-height: 1.75; margin-bottom: 16px; }
   .legal-ul { color: var(--text); font-size: 0.92rem; line-height: 1.75; margin-bottom: 16px; padding-left: 24px; }
   .legal-ul li { margin-bottom: 6px; }
+
+  /* ── AUTH ── */
+  .auth-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); z-index: 3000; display: none; align-items: center; justify-content: center; }
+  .auth-overlay.open { display: flex; }
+  .auth-modal { background: #fff; border-radius: 20px; padding: 48px 40px; max-width: 440px; width: 90%; position: relative; box-shadow: 0 24px 64px rgba(0,0,0,0.15); }
+  .auth-logo { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 900; color: var(--navy); text-align: center; margin-bottom: 8px; }
+  .auth-logo span { color: var(--amber); }
+  .auth-title { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 900; color: var(--navy); text-align: center; margin-bottom: 8px; }
+  .auth-sub { color: var(--muted); font-size: 0.88rem; text-align: center; margin-bottom: 28px; line-height: 1.5; }
+  .auth-google-btn { width: 100%; background: #fff; border: 1.5px solid var(--border); border-radius: 10px; padding: 14px; display: flex; align-items: center; justify-content: center; gap: 12px; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 500; color: var(--navy); transition: border-color 0.2s, box-shadow 0.2s; margin-bottom: 20px; }
+  .auth-google-btn:hover { border-color: var(--navy); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+  .auth-divider { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+  .auth-divider::before, .auth-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .auth-divider span { font-size: 0.78rem; color: var(--muted); }
+  .auth-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+  .auth-field label { font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+  .auth-field input { background: #f9f7f4; border: 1.5px solid var(--border); border-radius: 8px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 0.92rem; padding: 12px 16px; outline: none; transition: border-color 0.2s; width: 100%; }
+  .auth-field input:focus { border-color: var(--amber); box-shadow: 0 0 0 3px rgba(212,140,30,0.1); }
+  .auth-submit { width: 100%; background: var(--navy); color: #fff; padding: 14px; border-radius: 10px; font-size: 0.95rem; font-weight: 500; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; margin-top: 4px; transition: background 0.2s; }
+  .auth-submit:hover { background: #253d6a; }
+  .auth-switch { text-align: center; margin-top: 16px; font-size: 0.83rem; color: var(--muted); }
+  .auth-switch a { color: var(--amber); cursor: pointer; font-weight: 500; text-decoration: none; }
+  .auth-switch a:hover { text-decoration: underline; }
+  .auth-error { background: rgba(192,57,43,0.08); border: 1px solid rgba(192,57,43,0.2); color: #c0392b; border-radius: 8px; padding: 10px 14px; font-size: 0.83rem; margin-bottom: 14px; display: none; }
+  .auth-error.show { display: block; }
+  .auth-close { position: absolute; top: 16px; right: 20px; background: none; border: none; color: var(--muted); font-size: 1.4rem; cursor: pointer; }
+  .auth-plan-badge { background: linear-gradient(135deg, #fffdf8, #fff8ec); border: 1px solid var(--amber); border-radius: 10px; padding: 12px 16px; margin-bottom: 24px; text-align: center; }
+  .auth-plan-badge .plan-price-inline { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 900; color: var(--navy); }
+  /* Header auth buttons */
+  .header-user { display: flex; align-items: center; gap: 10px; }
+  .header-email { font-size: 0.78rem; color: var(--muted); max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .header-plan-badge { font-size: 0.7rem; font-weight: 600; padding: 2px 8px; border-radius: 100px; background: rgba(212,140,30,0.12); color: var(--amber2); }
+  .btn-signout { background: none; border: 1px solid var(--border); color: var(--muted); padding: 6px 14px; border-radius: 6px; font-size: 0.78rem; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.2s; }
+  .btn-signout:hover { border-color: var(--navy); color: var(--navy); }
+  .btn-login-header { background: transparent; border: 1.5px solid var(--navy); color: var(--navy); padding: 8px 18px; border-radius: 6px; font-size: 0.83rem; font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.2s; }
+  .btn-login-header:hover { background: var(--navy); color: #fff; }
   @media (max-width: 768px) {
     header { padding: 16px 20px; }
     nav { display: none; }
@@ -215,6 +252,62 @@
 <body>
 
 <div class="toast" id="toast"></div>
+
+<!-- AUTH MODAL -->
+<div class="auth-overlay" id="auth-overlay">
+  <div class="auth-modal">
+    <button class="auth-close" onclick="closeAuth()">✕</button>
+    <div class="auth-logo">Hire<span>Edge</span> AI</div>
+
+    <!-- Plan badge (shown when coming from paywall) -->
+    <div class="auth-plan-badge" id="auth-plan-badge" style="display:none">
+      <div style="font-size:0.75rem;color:var(--muted);margin-bottom:4px">You're unlocking</div>
+      <div class="plan-price-inline" id="auth-plan-name">30-Day Pack</div>
+      <div style="font-size:0.8rem;color:var(--muted);margin-top:2px" id="auth-plan-price">$9 one-time</div>
+    </div>
+
+    <div class="auth-title" id="auth-title">Welcome back</div>
+    <div class="auth-sub" id="auth-sub">Sign in to access your HireEdge account on any device</div>
+
+    <div class="auth-error" id="auth-error"></div>
+
+    <!-- Google Button -->
+    <button class="auth-google-btn" onclick="signInWithGoogle()">
+      <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z"/><path fill="#FBBC05" d="M3.964 10.71c-.18-.54-.282-1.117-.282-1.71s.102-1.17.282-1.71V4.958H.957C.347 6.173 0 7.548 0 9s.348 2.827.957 4.042l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z"/></svg>
+      Continue with Google
+    </button>
+
+    <div class="auth-divider"><span>or</span></div>
+
+    <!-- Email Form -->
+    <div id="auth-form-login">
+      <div class="auth-field">
+        <label>Email</label>
+        <input type="email" id="auth-email" placeholder="you@example.com" />
+      </div>
+      <div class="auth-field">
+        <label>Password</label>
+        <input type="password" id="auth-password" placeholder="••••••••" onkeydown="if(event.key==='Enter')submitAuth()" />
+      </div>
+      <button class="auth-submit" onclick="submitAuth()">Sign In</button>
+      <div class="auth-switch">No account? <a onclick="switchAuthMode('signup')">Create one free</a></div>
+    </div>
+
+    <div id="auth-form-signup" style="display:none">
+      <div class="auth-field">
+        <label>Email</label>
+        <input type="email" id="auth-email-signup" placeholder="you@example.com" />
+      </div>
+      <div class="auth-field">
+        <label>Password (min 6 characters)</label>
+        <input type="password" id="auth-password-signup" placeholder="••••••••" onkeydown="if(event.key==='Enter')submitAuth()" />
+      </div>
+      <button class="auth-submit" onclick="submitAuth()">Create Account</button>
+      <div class="auth-switch">Already have an account? <a onclick="switchAuthMode('login')">Sign in</a></div>
+    </div>
+  </div>
+</div>
+
 
 <!-- PAYWALL MODAL -->
 <div class="modal-overlay" id="paywall">
@@ -263,7 +356,9 @@
     <a href="#job-tailor">Job Tailor</a>
     <a href="#generator">Tools</a>
     <a href="#pricing">Pricing</a>
-    <a href="#pricing" class="btn-nav">Get Started</a>
+    <div id="header-auth-area">
+      <button class="btn-login-header" onclick="openAuth('login')">Log In</button>
+    </div>
   </nav>
   <button class="hamburger" onclick="document.getElementById('mobile-menu').classList.add('open')" aria-label="Menu">
     <span></span><span></span><span></span>
