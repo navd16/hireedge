@@ -325,35 +325,83 @@
 
       <!-- RESULTS COLUMN -->
       <div class="tailor-results" id="tailor-results">
-        <!-- ATS Score -->
+
+        <!-- STEP 1: SCORE CARD -->
         <div class="ats-score-card">
-          <div class="ats-label">ATS Match Score</div>
-          <div class="ats-number" id="ats-number">—</div>
-          <div class="ats-bar-wrap"><div class="ats-bar" id="ats-bar" style="width:0%;background:#1e9e5e"></div></div>
-          <div class="ats-verdict" id="ats-verdict"></div>
-          <div style="margin-top:16px">
-            <div style="font-size:0.75rem;color:var(--muted);margin-bottom:8px;letter-spacing:0.05em;text-transform:uppercase">Matched Keywords</div>
-            <div class="keywords-list" id="keywords-matched"></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+            <div class="ats-label" style="margin:0">Your Match Score</div>
+            <div id="ats-badge" style="font-size:0.72rem;font-weight:600;padding:4px 12px;border-radius:100px;background:#f0f0f0;color:var(--muted)">Analysing...</div>
           </div>
-          <div style="margin-top:12px">
-            <div style="font-size:0.75rem;color:var(--muted);margin-bottom:8px;letter-spacing:0.05em;text-transform:uppercase">Missing Keywords</div>
+          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:4px">
+            <div class="ats-number" id="ats-number">—</div>
+            <div style="font-size:1rem;color:var(--muted);font-family:'DM Sans',sans-serif">match</div>
+          </div>
+          <div class="ats-bar-wrap"><div class="ats-bar" id="ats-bar" style="width:0%"></div></div>
+          <div class="ats-verdict" id="ats-verdict" style="margin-top:12px;padding:12px;background:#f9f7f4;border-radius:8px;border-left:3px solid var(--amber)"></div>
+        </div>
+
+        <!-- STEP 2: ACTION PLAN -->
+        <div class="ats-score-card" style="padding:24px">
+          <div style="font-size:0.75rem;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;font-weight:500;margin-bottom:16px">Your Action Plan</div>
+
+          <!-- Missing Keywords Alert -->
+          <div style="margin-bottom:20px">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+              <span style="background:rgba(192,57,43,0.1);color:#c0392b;font-size:0.75rem;font-weight:600;padding:3px 10px;border-radius:100px" id="missing-count-badge">0 Missing</span>
+              <span style="font-size:0.85rem;font-weight:500;color:var(--navy)">Keywords to Add</span>
+            </div>
             <div class="keywords-list" id="keywords-missing"></div>
+            <div id="missing-tip" style="font-size:0.8rem;color:var(--muted);margin-top:8px;display:none">💡 Add these keywords naturally into your resume and cover letter to improve your ATS score.</div>
+          </div>
+
+          <div style="height:1px;background:var(--border);margin-bottom:20px"></div>
+
+          <!-- Bullet Point Improvements -->
+          <div style="margin-bottom:20px">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+              <span style="background:rgba(212,140,30,0.12);color:var(--amber2);font-size:0.75rem;font-weight:600;padding:3px 10px;border-radius:100px">⚠ Fix These</span>
+              <span style="font-size:0.85rem;font-weight:500;color:var(--navy)">Bullet Point Improvements</span>
+            </div>
+            <div id="bullet-improvements" style="display:flex;flex-direction:column;gap:8px"></div>
+          </div>
+
+          <div style="height:1px;background:var(--border);margin-bottom:20px"></div>
+
+          <!-- What's Working -->
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+              <span style="background:rgba(30,158,94,0.1);color:#1e9e5e;font-size:0.75rem;font-weight:600;padding:3px 10px;border-radius:100px">✓ Strong</span>
+              <span style="font-size:0.85rem;font-weight:500;color:var(--navy)">What You Already Have</span>
+            </div>
+            <div class="keywords-list" id="keywords-matched"></div>
           </div>
         </div>
 
-        <!-- Tailored Resume -->
+        <!-- STEP 3: OPTIMISED OUTPUT -->
+        <div style="background:linear-gradient(135deg,#1c2b4a,#253d6a);border-radius:14px;padding:20px;margin-bottom:4px">
+          <div style="font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:6px;font-weight:500">Step 3 — Your Optimised Application</div>
+          <div style="color:#fff;font-size:0.95rem;font-weight:500" id="optimised-score-line">Here's your tailored application ↓</div>
+        </div>
+
         <div class="tailor-output-card">
-          <div class="tailor-output-label">Tailored Resume Summary<button class="copy-btn" onclick="copyText('tailor-resume-text')">Copy</button></div>
+          <div class="tailor-output-label">✦ Optimised Resume Summary<button class="copy-btn" onclick="copyText('tailor-resume-text')">Copy</button></div>
           <div class="loading-dots" id="tailor-resume-loading"><span></span><span></span><span></span></div>
           <div class="tailor-output-text" id="tailor-resume-text"></div>
         </div>
 
-        <!-- Tailored Cover Letter -->
         <div class="tailor-output-card">
-          <div class="tailor-output-label">Tailored Cover Letter<button class="copy-btn" onclick="copyText('tailor-cover-text')">Copy</button></div>
+          <div class="tailor-output-label">✦ Tailored Cover Letter<button class="copy-btn" onclick="copyText('tailor-cover-text')">Copy</button></div>
           <div class="loading-dots" id="tailor-cover-loading"><span></span><span></span><span></span></div>
           <div class="tailor-output-text" id="tailor-cover-text"></div>
         </div>
+
+        <!-- After score -->
+        <div class="ats-score-card" id="after-score-card" style="display:none;text-align:center;background:linear-gradient(135deg,#f0fff8,#fff)">
+          <div style="font-size:0.75rem;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px">Estimated Score After Optimisation</div>
+          <div class="ats-number high" id="after-score">—</div>
+          <div style="font-size:0.85rem;color:#1e9e5e;margin-top:8px;font-weight:500" id="score-improvement"></div>
+        </div>
+
       </div>
 
       <!-- PLACEHOLDER when no results yet -->
@@ -781,9 +829,9 @@ async function tailorApplication() {
 
   const btn = document.getElementById('tailor-btn');
   btn.disabled = true;
-  btn.innerHTML = '<div class="spinner"></div><span>Analysing job & tailoring...</span>';
+  btn.innerHTML = '<div class="spinner"></div><span>Analysing your match...</span>';
 
-  // Show results, hide placeholder
+  // Reset UI
   document.getElementById('tailor-results').classList.add('visible');
   document.getElementById('tailor-placeholder').style.display = 'none';
   document.getElementById('tailor-resume-loading').classList.add('visible');
@@ -795,6 +843,12 @@ async function tailorApplication() {
   document.getElementById('ats-verdict').textContent = '';
   document.getElementById('keywords-matched').innerHTML = '';
   document.getElementById('keywords-missing').innerHTML = '';
+  document.getElementById('bullet-improvements').innerHTML = '';
+  document.getElementById('after-score-card').style.display = 'none';
+  document.getElementById('ats-badge').textContent = 'Analysing...';
+  document.getElementById('ats-badge').style.background = '#f0f0f0';
+  document.getElementById('ats-badge').style.color = 'var(--muted)';
+  document.getElementById('missing-tip').style.display = 'none';
 
   // Increment usage
   if (!isPro()) {
@@ -807,7 +861,7 @@ async function tailorApplication() {
   }
   updateUsageDisplay();
 
-  const prompt = `You are an expert career coach and ATS specialist. Analyse this job description and candidate background, then return a JSON object (no markdown, no backticks, just raw JSON).
+  const prompt = `You are a world-class career coach and ATS expert. Analyse this job description against the candidate's background. Return ONLY a raw JSON object — no markdown, no backticks, no explanation.
 
 CANDIDATE BACKGROUND:
 ${background}
@@ -815,14 +869,21 @@ ${background}
 JOB DESCRIPTION:
 ${jobdesc}
 
-Return this exact JSON structure:
+Return this exact JSON:
 {
-  "ats_score": <number 0-100>,
-  "ats_verdict": "<one sentence explaining the score and main gap or strength>",
-  "matched_keywords": ["keyword1", "keyword2", "keyword3", "keyword4", "keyword5"],
-  "missing_keywords": ["keyword1", "keyword2", "keyword3", "keyword4"],
-  "tailored_resume": "<3-4 sentence ATS-optimized resume summary that uses the job's exact keywords and highlights the most relevant experience. Start with the job title from the posting.>",
-  "tailored_cover": "<A compelling 3-paragraph cover letter under 220 words, tailored specifically to this role and company. Use keywords from the job description. Professional but human tone. Bold opening, specific middle, confident close.>"
+  "ats_score": <number 0-100, honest assessment>,
+  "ats_badge": "<one of: Excellent Match | Strong Candidate | Partial Match | Weak Match>",
+  "ats_verdict": "<One specific sentence: 'You are X% match for this role. Your strongest asset is Y, but you are missing Z which is critical for this position.'>",
+  "matched_keywords": ["up to 6 keywords/skills the candidate HAS that the job requires"],
+  "missing_keywords": ["up to 6 critical keywords/skills from the job the candidate is MISSING"],
+  "bullet_improvements": [
+    {"original": "<weak bullet from their background>", "improved": "<rewritten with specific number/outcome>", "reason": "<why this is better>"},
+    {"original": "<another weak bullet>", "improved": "<rewritten>", "reason": "<why>"}
+  ],
+  "tailored_resume": "<3-4 sentence ATS-optimised resume summary. Use the job title from the posting in the first sentence. Include the missing keywords naturally. Quantify everything possible.>",
+  "tailored_cover": "<3 paragraph cover letter under 220 words. First line must start with the impact statement: how you will help THIS company. Second paragraph: most relevant experience with numbers. Third paragraph: enthusiasm for this role + call to action.>",
+  "after_score": <number 0-100, estimated score after applying the optimised resume>,
+  "score_improvement_text": "<e.g. +18% improvement — from 72% to 90% match>"
 }`;
 
   try {
@@ -834,47 +895,88 @@ Return this exact JSON structure:
     const data = await res.json();
     const raw = data.text || '';
 
-    let parsed;
+    let p;
     try {
       const clean = raw.replace(/```json|```/g, '').trim();
-      parsed = JSON.parse(clean);
+      p = JSON.parse(clean);
     } catch(e) {
       throw new Error('Could not parse AI response');
     }
 
-    // Render ATS score
-    const score = Math.min(100, Math.max(0, parsed.ats_score || 0));
+    // ── SCORE ──
+    const score = Math.min(100, Math.max(0, p.ats_score || 0));
     const numEl = document.getElementById('ats-number');
     const barEl = document.getElementById('ats-bar');
+    const badgeEl = document.getElementById('ats-badge');
+    const verdictEl = document.getElementById('ats-verdict');
+
     numEl.textContent = score + '%';
     numEl.className = 'ats-number ' + (score >= 70 ? 'high' : score >= 45 ? 'mid' : 'low');
     barEl.style.width = score + '%';
     barEl.style.background = score >= 70 ? '#1e9e5e' : score >= 45 ? '#d48c1e' : '#c0392b';
-    document.getElementById('ats-verdict').textContent = parsed.ats_verdict || '';
 
-    // Keywords
+    const badgeColors = {
+      'Excellent Match': ['rgba(30,158,94,0.12)', '#1e9e5e'],
+      'Strong Candidate': ['rgba(30,158,94,0.08)', '#1e9e5e'],
+      'Partial Match': ['rgba(212,140,30,0.12)', '#b87318'],
+      'Weak Match': ['rgba(192,57,43,0.1)', '#c0392b']
+    };
+    const bc = badgeColors[p.ats_badge] || ['#f0f0f0', 'var(--muted)'];
+    badgeEl.textContent = p.ats_badge || 'Analysed';
+    badgeEl.style.background = bc[0];
+    badgeEl.style.color = bc[1];
+    verdictEl.textContent = p.ats_verdict || '';
+
+    // ── KEYWORDS ──
     const matchedEl = document.getElementById('keywords-matched');
     const missingEl = document.getElementById('keywords-missing');
-    (parsed.matched_keywords || []).forEach(k => {
+    const missingBadge = document.getElementById('missing-count-badge');
+
+    (p.matched_keywords || []).forEach(k => {
       const chip = document.createElement('span');
       chip.className = 'keyword-chip keyword-match';
       chip.textContent = k;
       matchedEl.appendChild(chip);
     });
-    (parsed.missing_keywords || []).forEach(k => {
+
+    const missing = p.missing_keywords || [];
+    missing.forEach(k => {
       const chip = document.createElement('span');
       chip.className = 'keyword-chip keyword-missing';
       chip.textContent = k;
       missingEl.appendChild(chip);
     });
+    missingBadge.textContent = missing.length + ' Missing';
+    if (missing.length > 0) document.getElementById('missing-tip').style.display = 'block';
 
-    // Render text outputs
+    // ── BULLET IMPROVEMENTS ──
+    const bulletsEl = document.getElementById('bullet-improvements');
+    (p.bullet_improvements || []).forEach(b => {
+      const item = document.createElement('div');
+      item.style.cssText = 'background:#fffdf8;border:1px solid rgba(212,140,30,0.2);border-radius:10px;padding:14px 16px;font-size:0.83rem;line-height:1.6';
+      item.innerHTML = `
+        <div style="color:#c0392b;text-decoration:line-through;margin-bottom:6px;opacity:0.7">${b.original || ''}</div>
+        <div style="color:#1e9e5e;font-weight:500;margin-bottom:4px">→ ${b.improved || ''}</div>
+        <div style="color:var(--muted);font-size:0.78rem">${b.reason || ''}</div>`;
+      bulletsEl.appendChild(item);
+    });
+
+    // ── AFTER SCORE ──
+    if (p.after_score) {
+      const afterCard = document.getElementById('after-score-card');
+      document.getElementById('after-score').textContent = p.after_score + '%';
+      document.getElementById('score-improvement').textContent = p.score_improvement_text || '';
+      afterCard.style.display = 'block';
+    }
+
+    // ── OPTIMISED OUTPUT ──
+    document.getElementById('optimised-score-line').textContent =
+      `Using this version → estimated ${p.after_score || score + 15}% match ↓`;
+
     document.getElementById('tailor-resume-loading').classList.remove('visible');
     document.getElementById('tailor-cover-loading').classList.remove('visible');
-    typewriter(document.getElementById('tailor-resume-text'), parsed.tailored_resume || '');
-    setTimeout(() => {
-      typewriter(document.getElementById('tailor-cover-text'), parsed.tailored_cover || '');
-    }, 500);
+    typewriter(document.getElementById('tailor-resume-text'), p.tailored_resume || '');
+    setTimeout(() => typewriter(document.getElementById('tailor-cover-text'), p.tailored_cover || ''), 600);
 
     document.getElementById('tailor-results').scrollIntoView({ behavior: 'smooth', block: 'start' });
 
