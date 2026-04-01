@@ -761,6 +761,9 @@ function getSingleCredits() {
 
 // isPro: pack within 30 days or lifetime
 function isPro() {
+  // Check Supabase plan first
+  if (typeof currentUser !== 'undefined' && currentUser && (currentPlan === 'lifetime' || currentPlan === 'pack')) return true;
+  // Fallback to localStorage
   if (localStorage.getItem('hireedge_lifetime') === 'true') return true;
   const packDate = parseInt(localStorage.getItem('hireedge_pack_date') || '0');
   return packDate && (Date.now() - packDate) < CONFIG.PACK_DAYS * 24 * 60 * 60 * 1000;
@@ -803,13 +806,22 @@ function updateUsageDisplay() {
 updateUsageDisplay();
 
 // ── PAYWALL ──
-function openPaywall() { document.getElementById('paywall').classList.add('open'); }
+function openPaywall() {
+  if (typeof currentUser !== 'undefined' && !currentUser) { openAuth('signup', 'pack'); return; }
+  document.getElementById('paywall').classList.add('open');
+}
 function closePaywall() { document.getElementById('paywall').classList.remove('open'); }
 
 // ── STRIPE CHECKOUT ──
 function checkout(plan) {
+  if (typeof currentUser !== 'undefined' && !currentUser) { openAuth('signup', plan); return; }
+  proceedToCheckout(plan);
+}
+function proceedToCheckout(plan) {
   const urls = { single: CONFIG.STRIPE_SINGLE_LINK, pack: CONFIG.STRIPE_PACK_LINK, lifetime: CONFIG.STRIPE_LIFETIME_LINK };
-  window.open(urls[plan] || '#', '_blank');
+  let url = urls[plan] || '#';
+  if (typeof currentUser !== 'undefined' && currentUser?.email) url += (url.includes('?') ? '&' : '?') + 'prefilled_email=' + encodeURIComponent(currentUser.email);
+  window.open(url, '_blank');
 }
 
 // Handle Stripe redirect: ?success=true&plan=single|pack|lifetime
@@ -1190,8 +1202,7 @@ function updateHeaderAuth() {
   }
 }
 
-const _origIsPro = isPro;
-function isPro() { if (currentUser && (currentPlan === 'lifetime' || currentPlan === 'pack')) return true; return _origIsPro(); }
+// isPro handled by original function below
 
 let authMode = 'login';
 
@@ -1263,17 +1274,10 @@ async function signOut() {
   showToast('Signed out');
 }
 
-function checkout(plan) { if (!currentUser) { openAuth('signup', plan); return; } proceedToCheckout(plan); }
+// checkout handled by original function below
 
-function proceedToCheckout(plan) {
-  const urls = { single: CONFIG.STRIPE_SINGLE_LINK, pack: CONFIG.STRIPE_PACK_LINK, lifetime: CONFIG.STRIPE_LIFETIME_LINK };
-  let url = urls[plan] || '#';
-  if (currentUser?.email) url += (url.includes('?') ? '&' : '?') + 'prefilled_email=' + encodeURIComponent(currentUser.email);
-  window.open(url, '_blank');
-}
 
-const _origOpenPaywall = openPaywall;
-function openPaywall() { if (!currentUser) { openAuth('signup', 'pack'); return; } _origOpenPaywall(); }
+// openPaywall handled by original function below
 
 window.addEventListener('load', initAuth);
 
