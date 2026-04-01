@@ -272,12 +272,12 @@
     <div class="auth-error" id="auth-error"></div>
 
     <!-- Google Button -->
-    <button class="auth-google-btn" onclick="signInWithGoogle()">
+    <button class="auth-google-btn" id="auth-google-btn" onclick="signInWithGoogle()">
       <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z"/><path fill="#FBBC05" d="M3.964 10.71c-.18-.54-.282-1.117-.282-1.71s.102-1.17.282-1.71V4.958H.957C.347 6.173 0 7.548 0 9s.348 2.827.957 4.042l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z"/></svg>
       Continue with Google
     </button>
 
-    <div class="auth-divider"><span>or</span></div>
+    <div class="auth-divider" id="auth-divider"><span>or</span></div>
 
     <!-- Email Form -->
     <div id="auth-form-login">
@@ -286,11 +286,34 @@
         <input type="email" id="auth-email" placeholder="you@example.com" />
       </div>
       <div class="auth-field">
-        <label>Password</label>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <label style="margin:0">Password</label>
+          <a onclick="showForgotPassword()" style="font-size:0.78rem;color:var(--amber);cursor:pointer;font-weight:500">Forgot password?</a>
+        </div>
         <input type="password" id="auth-password" placeholder="••••••••" onkeydown="if(event.key==='Enter')submitAuth()" />
       </div>
       <button class="auth-submit" onclick="submitAuth()">Sign In</button>
       <div class="auth-switch">No account? <a onclick="switchAuthMode('signup')">Create one free</a></div>
+    </div>
+
+    <!-- Email confirmation screen -->
+    <div id="auth-confirm-screen" style="display:none;text-align:center;padding:8px 0">
+      <div style="font-size:3rem;margin-bottom:16px">📬</div>
+      <div style="font-size:0.95rem;color:var(--text);line-height:1.6;margin-bottom:16px">We sent a confirmation link to <strong id="confirm-email-display"></strong></div>
+      <div style="font-size:0.85rem;color:var(--muted);line-height:1.6;margin-bottom:24px">Click the link in your email to activate your account. Check your spam folder if you don't see it.</div>
+      <button class="auth-submit" onclick="closeAuth()" style="background:var(--navy)">Got it</button>
+      <div style="margin-top:12px;font-size:0.8rem;color:var(--muted)">Wrong email? <a onclick="switchAuthMode('signup')" style="color:var(--amber);cursor:pointer">Go back</a></div>
+    </div>
+
+    <!-- Forgot password screen -->
+    <div id="auth-forgot-screen" style="display:none">
+      <div style="font-size:0.88rem;color:var(--muted);margin-bottom:20px;line-height:1.5">Enter your email and we'll send you a link to reset your password.</div>
+      <div class="auth-field">
+        <label>Email</label>
+        <input type="email" id="auth-forgot-email" placeholder="you@example.com" onkeydown="if(event.key==='Enter')submitForgotPassword()" />
+      </div>
+      <button class="auth-submit" onclick="submitForgotPassword()">Send Reset Link</button>
+      <div class="auth-switch"><a onclick="switchAuthMode('login')" style="color:var(--amber);cursor:pointer">← Back to sign in</a></div>
     </div>
 
     <div id="auth-form-signup" style="display:none">
@@ -1243,6 +1266,37 @@ function switchAuthMode(mode) {
   authMode = mode;
   document.getElementById('auth-form-login').style.display = mode === 'login' ? 'block' : 'none';
   document.getElementById('auth-form-signup').style.display = mode === 'signup' ? 'block' : 'none';
+  document.getElementById('auth-confirm-screen').style.display = 'none';
+  document.getElementById('auth-forgot-screen').style.display = 'none';
+  if (mode === 'login') { document.getElementById('auth-title').textContent = 'Welcome back'; document.getElementById('auth-sub').textContent = 'Sign in to access your account on any device'; }
+  if (mode === 'signup') { document.getElementById('auth-title').textContent = 'Create account'; document.getElementById('auth-sub').textContent = 'Join HireEdge AI free'; }
+}
+
+function showForgotPassword() {
+  document.getElementById('auth-form-login').style.display = 'none';
+  document.getElementById('auth-form-signup').style.display = 'none';
+  document.getElementById('auth-confirm-screen').style.display = 'none';
+  document.getElementById('auth-forgot-screen').style.display = 'block';
+  document.getElementById('auth-title').textContent = 'Reset password';
+  document.getElementById('auth-sub').textContent = '';
+}
+
+async function submitForgotPassword() {
+  const sb = getSupabase();
+  const email = document.getElementById('auth-forgot-email').value.trim();
+  if (!email) { showAuthError('Please enter your email address.'); return; }
+  const { error } = await sb.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + '/?reset=true'
+  });
+  if (error) { showAuthError(error.message); }
+  else {
+    document.getElementById('auth-forgot-screen').style.display = 'none';
+    document.getElementById('auth-confirm-screen').style.display = 'block';
+    const confirmEl = document.getElementById('confirm-email-display');
+    if (confirmEl) confirmEl.textContent = email;
+    document.getElementById('auth-title').textContent = 'Check your email';
+    document.getElementById('auth-sub').textContent = '';
+  }
 }
 
 async function signInWithGoogle() {
@@ -1266,8 +1320,16 @@ async function submitAuth() {
     if (!email || !password) { showAuthError('Please enter your email and password.'); return; }
     if (password.length < 6) { showAuthError('Password must be at least 6 characters.'); return; }
     const { error } = await sb.auth.signUp({ email, password });
-    if (error) showAuthError(error.message);
-    else { showToast('Account created! Check your email to verify.'); closeAuth(); }
+    if (error) { showAuthError(error.message); }
+    else {
+      document.getElementById('auth-form-signup').style.display = 'none';
+      document.getElementById('auth-confirm-screen').style.display = 'block';
+      document.getElementById('auth-forgot-screen').style.display = 'none';
+      const confirmEl = document.getElementById('confirm-email-display');
+      if (confirmEl) confirmEl.textContent = email;
+      document.getElementById('auth-title').textContent = 'Check your email';
+      document.getElementById('auth-sub').textContent = '';
+    }
   }
 }
 
@@ -1286,7 +1348,14 @@ async function signOut() {
 
 // openPaywall handled by original function below
 
-window.addEventListener('load', initAuth);
+window.addEventListener('load', () => {
+  initAuth();
+  // Handle password reset redirect
+  if (new URLSearchParams(location.search).get('reset') === 'true') {
+    openAuth('login');
+    showToast('Password reset! Please sign in with your new password.');
+  }
+});
 
 // ── LEGAL PAGES ──
 const termsContent = `<div class="legal-h1">Terms of Service</div><div class="legal-date">Last updated: March 2026</div><div class="legal-h2">1. Acceptance</div><p class="legal-p">By using HireEdge AI you agree to these terms.</p><div class="legal-h2">2. Payments</div><p class="legal-p">One-time purchases: $2 single, $9 thirty-day pack, $79 lifetime. Processed by Stripe. No refunds once used. Contact support@hireedgeai.com for issues.</p><div class="legal-h2">3. Disclaimer</div><p class="legal-p">We do not guarantee employment outcomes. Review all generated content before use.</p><div class="legal-h2">4. Contact</div><p class="legal-p"><a href="mailto:support@hireedgeai.com" style="color:var(--amber)">support@hireedgeai.com</a></p>`;
