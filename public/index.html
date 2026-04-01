@@ -61,13 +61,13 @@
   .tab { padding: 10px 24px; border-radius: 7px; font-size: 0.88rem; cursor: pointer; border: none; background: transparent; color: var(--muted); font-family: 'DM Sans', sans-serif; transition: all 0.2s; }
   .tab.active { background: #fff; color: var(--navy); border: 1px solid var(--border); box-shadow: var(--shadow); font-weight: 500; }
   .tab:hover:not(.active) { color: var(--text); }
-  .tool-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 40px; display: none; box-shadow: var(--shadow); }
+  .tool-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 16px; padding: 40px; display: none; box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
   .tool-card.active { display: block; }
   .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
   .field { display: flex; flex-direction: column; gap: 8px; }
   .field.full { grid-column: 1 / -1; }
   label { font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
-  input, textarea, select { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 0.92rem; padding: 12px 16px; transition: border-color 0.2s, box-shadow 0.2s; outline: none; resize: none; }
+  input, textarea, select { background: var(--bg); border: 1.5px solid var(--border); border-radius: 8px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 0.92rem; padding: 12px 16px; transition: border-color 0.2s, box-shadow 0.2s; outline: none; resize: none; }
   input:focus, textarea:focus, select:focus { border-color: var(--amber); box-shadow: 0 0 0 3px rgba(212,140,30,0.1); }
   select option { background: #fff; }
   textarea { min-height: 120px; line-height: 1.6; }
@@ -86,7 +86,7 @@
   .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
   .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
   .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 56px; }
-  .price-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 40px 32px; position: relative; transition: transform 0.2s, box-shadow 0.2s; box-shadow: var(--shadow); }
+  .price-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 16px; padding: 40px 32px; position: relative; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
   .price-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
   .price-card.featured { border-color: var(--amber); background: linear-gradient(135deg, #fffdf8 0%, #fff8ec 100%); box-shadow: 0 4px 24px rgba(212,140,30,0.12); }
   .featured-badge { position: absolute; top: -13px; left: 50%; transform: translateX(-50%); background: var(--amber); color: #fff; font-size: 0.72rem; font-weight: 500; padding: 4px 16px; border-radius: 100px; letter-spacing: 0.05em; white-space: nowrap; }
@@ -134,8 +134,81 @@
   .retry-tone:hover, .retry-tone.selected { border-color: var(--amber); color: var(--amber2); background: rgba(212,140,30,0.05); }
   .retry-btn { background: var(--navy); color: #fff; padding: 7px 18px; border-radius: 7px; font-size: 0.82rem; font-weight: 500; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; white-space: nowrap; transition: background 0.2s; flex-shrink: 0; }
   .retry-btn:hover { background: #253d6a; }
+
+  /* ── JOB TAILOR ── */
+  .tailor-section { background: linear-gradient(135deg, #f8f9ff 0%, #fff 100%); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 80px 48px; }
+  .tailor-input-col .field label { font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); font-weight: 500; display: block; margin-bottom: 8px; }
+  .tailor-input-wrap { background: #fff; border: 1.5px solid var(--border); border-radius: 14px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); display: flex; flex-direction: column; gap: 20px; }
+  .tailor-inner { max-width: 1200px; margin: 0 auto; }
+  .tailor-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-top: 48px; align-items: start; }
+  .tailor-input-col { display: flex; flex-direction: column; gap: 20px; }
+  .tailor-results { display: none; flex-direction: column; gap: 20px; }
+  .tailor-results.visible { display: flex; }
+  .ats-score-card { background: #fff; border: 1px solid var(--border); border-radius: 16px; padding: 32px; text-align: center; box-shadow: var(--shadow); }
+  .ats-number { font-family: 'Playfair Display', serif; font-size: 5rem; font-weight: 900; line-height: 1; }
+  .ats-number.high { color: #1e9e5e; }
+  .ats-number.mid { color: #d48c1e; }
+  .ats-number.low { color: #c0392b; }
+  .ats-label { font-size: 0.8rem; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 8px; }
+  .ats-bar-wrap { background: #f0f0f0; border-radius: 100px; height: 8px; margin: 16px 0 8px; overflow: hidden; }
+  .ats-bar { height: 100%; border-radius: 100px; transition: width 1s ease; }
+  .ats-verdict { font-size: 0.88rem; color: var(--muted); line-height: 1.5; margin-top: 12px; }
+  .tailor-output-card { background: #fffdf8; border: 1px solid var(--border); border-left: 3px solid var(--amber); border-radius: 12px; padding: 24px; }
+  .tailor-output-label { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--amber); margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; font-weight: 500; }
+  .tailor-output-text { color: var(--text); font-size: 0.88rem; line-height: 1.75; white-space: pre-wrap; }
+  .tailor-btn { width: 100%; background: var(--navy); color: #fff; padding: 18px; border-radius: 10px; font-size: 1rem; font-weight: 500; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; display: flex; align-items: center; justify-content: center; gap: 10px; transition: background 0.2s, transform 0.15s, box-shadow 0.2s; }
+  .tailor-btn:hover { background: #253d6a; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(28,43,74,0.2); }
+  .tailor-btn:disabled { background: #ccc; cursor: not-allowed; transform: none; box-shadow: none; }
+  .keywords-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .keyword-chip { padding: 4px 12px; border-radius: 100px; font-size: 0.75rem; font-weight: 500; }
+  .keyword-match { background: rgba(30,158,94,0.1); color: #1e9e5e; border: 1px solid rgba(30,158,94,0.2); }
+  .keyword-missing { background: rgba(192,57,43,0.08); color: #c0392b; border: 1px solid rgba(192,57,43,0.15); }
+
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+  .hamburger span { display: block; width: 22px; height: 2px; background: var(--navy); border-radius: 2px; transition: all 0.3s; }
+  .mobile-menu { display: none; position: fixed; inset: 0; background: rgba(255,255,255,0.98); z-index: 200; flex-direction: column; align-items: center; justify-content: center; gap: 32px; }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; color: var(--navy); text-decoration: none; }
+  .mobile-menu-close { position: absolute; top: 24px; right: 24px; background: none; border: none; font-size: 1.8rem; cursor: pointer; color: var(--muted); }
+  .legal-h1 { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 900; color: var(--navy); margin-bottom: 8px; }
+  .legal-date { color: var(--muted); font-size: 0.85rem; margin-bottom: 40px; }
+  .legal-h2 { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--navy); margin: 32px 0 12px; }
+  .legal-p { color: var(--text); font-size: 0.92rem; line-height: 1.75; margin-bottom: 16px; }
+  .legal-ul { color: var(--text); font-size: 0.92rem; line-height: 1.75; margin-bottom: 16px; padding-left: 24px; }
+  .legal-ul li { margin-bottom: 6px; }
   @media (max-width: 768px) {
-    header { padding: 20px 24px; } nav { display: none; } .hero { padding: 60px 24px 48px; } section { padding: 64px 24px; } .tool-wrapper { padding: 0 24px; } .form-grid { grid-template-columns: 1fr; } .pricing-grid { grid-template-columns: 1fr; } .hero-stats { gap: 32px; flex-wrap: wrap; justify-content: center; } footer { flex-direction: column; gap: 16px; padding: 32px 24px; text-align: center; }
+    header { padding: 16px 20px; }
+    nav { display: none; }
+    .hamburger { display: flex; }
+    .hero { padding: 48px 20px 40px; }
+    h1 { font-size: 2.4rem; letter-spacing: -0.02em; }
+    .hero-sub { font-size: 0.95rem; }
+    .hero-cta { flex-direction: column; gap: 12px; width: 100%; }
+    .btn-primary, .btn-outline { width: 100%; text-align: center; padding: 14px 24px; }
+    .hero-stats { gap: 24px; flex-wrap: wrap; justify-content: center; margin-top: 40px; }
+    .stat-num { font-size: 1.8rem; }
+    section { padding: 48px 20px; }
+    h2 { font-size: 1.8rem; }
+    .tool-wrapper { padding: 0 20px; }
+    .form-grid { grid-template-columns: 1fr; }
+    .tabs { flex-wrap: wrap; width: 100%; }
+    .tab { flex: 1; min-width: 120px; text-align: center; padding: 8px 12px; font-size: 0.8rem; }
+    .tool-card { padding: 24px 16px; }
+    .pricing-grid { grid-template-columns: 1fr !important; }
+    .price-card { padding: 32px 24px; }
+    .hero-stats { gap: 20px; }
+    footer { flex-direction: column; gap: 12px; padding: 32px 20px; text-align: center; }
+    .tailor-section { padding: 48px 20px; }
+    .tailor-grid { grid-template-columns: 1fr !important; gap: 24px; }
+    .tailor-input-col { gap: 16px; }
+    .ats-score-card { padding: 24px 16px; }
+    .ats-number { font-size: 3.5rem; }
+    .retry-bar { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .retry-tones { gap: 6px; }
+    .retry-btn { width: 100%; text-align: center; }
+    .modal { padding: 32px 20px; }
+    .modal h3 { font-size: 1.4rem; }
+    #tailor-placeholder { padding: 32px 16px; }
   }
 </style>
 </head>
@@ -187,26 +260,109 @@
 <header>
   <div class="logo">Hire<span>Edge</span> AI</div>
   <nav>
-    <a href="#generator">Generator</a>
+    <a href="#job-tailor">Job Tailor</a>
+    <a href="#generator">Tools</a>
     <a href="#pricing">Pricing</a>
     <a href="#pricing" class="btn-nav">Get Started</a>
   </nav>
+  <button class="hamburger" onclick="document.getElementById('mobile-menu').classList.add('open')" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </header>
+
+<div class="mobile-menu" id="mobile-menu">
+  <button class="mobile-menu-close" onclick="document.getElementById('mobile-menu').classList.remove('open')">✕</button>
+  <a href="#job-tailor" onclick="document.getElementById('mobile-menu').classList.remove('open')">Job Tailor</a>
+  <a href="#generator" onclick="document.getElementById('mobile-menu').classList.remove('open')">Tools</a>
+  <a href="#pricing" onclick="document.getElementById('mobile-menu').classList.remove('open')">Pricing</a>
+  <a href="#pricing" onclick="document.getElementById('mobile-menu').classList.remove('open')" style="background:var(--navy);color:#fff;padding:14px 36px;border-radius:8px;font-size:1.2rem">Get Started</a>
+</div>
 
 <div class="hero">
   <div class="hero-glow"></div>
   <div class="hero-glow2"></div>
   <div class="eyebrow">Powered by AI</div>
-  <h1>Land your <em>dream job</em><br/>in half the time</h1>
-  <p class="hero-sub">AI-generated resumes, cover letters, and the best tools curated for job seekers — everything in one place.</p>
+  <h1>Tailor your CV to <em>any job</em><br/>in seconds</h1>
+  <p class="hero-sub">Paste a job description and get a tailored resume, cover letter, ATS match score — and beat 90% of applicants before they start.</p>
   <div class="hero-cta">
-    <button class="btn-primary" onclick="document.getElementById('generator').scrollIntoView({behavior:'smooth'})">Generate for Free →</button>
-    <button class="btn-outline" onclick="document.getElementById('tools').scrollIntoView({behavior:'smooth'})">Browse AI Tools</button>
+    <button class="btn-primary" onclick="document.getElementById('job-tailor').scrollIntoView({behavior:'smooth'})">Tailor My Application →</button>
+    <button class="btn-outline" onclick="document.getElementById('generator').scrollIntoView({behavior:'smooth'})">Use Individual Tools</button>
   </div>
   <div class="hero-stats">
     <div class="stat"><div class="stat-num">14,200+</div><div class="stat-label">Resumes Generated</div></div>
     <div class="stat"><div class="stat-num">3×</div><div class="stat-label">More Interviews</div></div>
     <div class="stat"><div class="stat-num">48 hrs</div><div class="stat-label">Avg. First Response</div></div>
+  </div>
+</div>
+
+
+<!-- JOB TAILOR — MAIN FEATURE -->
+<div class="tailor-section" id="job-tailor">
+  <div class="tailor-inner">
+    <div class="section-label">✦ New — Most Powerful Feature</div>
+    <h2>Paste a job description.<br/>Get a <em>tailored</em> application.</h2>
+    <p style="color:var(--muted);font-size:0.95rem;margin-top:12px;max-width:560px">Most applicants send generic CVs. HireEdge rewrites yours to match the exact language, keywords and requirements of the job — so you get past ATS filters and stand out to recruiters.</p>
+
+    <div class="tailor-grid">
+      <!-- INPUT COLUMN -->
+      <div class="tailor-input-col">
+        <div class="tailor-input-wrap">
+          <div class="field">
+            <label>Your Background (brief summary)</label>
+            <textarea id="t-background" placeholder="e.g. 8 years in software engineering, led teams of 5, built SaaS products, expert in Python and React, increased revenue by 40% at last role..." style="min-height:110px;background:#f9f7f4;border:1.5px solid var(--border);border-radius:10px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.92rem;padding:12px 16px;outline:none;resize:none;width:100%;line-height:1.6;transition:border-color 0.2s,box-shadow 0.2s" onfocus="this.style.borderColor='var(--amber)';this.style.boxShadow='0 0 0 3px rgba(212,140,30,0.1)'" onblur="this.style.borderColor='var(--border)';this.style.boxShadow='none'"></textarea>
+          </div>
+          <div style="height:1px;background:var(--border)"></div>
+          <div class="field">
+            <label>Job Description (paste the full job posting)</label>
+            <textarea id="t-jobdesc" placeholder="Paste the full job description here — including requirements, responsibilities, and any keywords..." style="min-height:180px;background:#f9f7f4;border:1.5px solid var(--border);border-radius:10px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.92rem;padding:12px 16px;outline:none;resize:none;width:100%;line-height:1.6;transition:border-color 0.2s,box-shadow 0.2s" onfocus="this.style.borderColor='var(--amber)';this.style.boxShadow='0 0 0 3px rgba(212,140,30,0.1)'" onblur="this.style.borderColor='var(--border)';this.style.boxShadow='none'"></textarea>
+          </div>
+        </div>
+        <button class="tailor-btn" id="tailor-btn" onclick="tailorApplication()">
+          <span>✦ Tailor My Application</span>
+        </button>
+        <p style="font-size:0.78rem;color:var(--muted);text-align:center;margin-top:-8px">Uses 1 generation credit · All 3 tools unlocked</p>
+      </div>
+
+      <!-- RESULTS COLUMN -->
+      <div class="tailor-results" id="tailor-results">
+        <!-- ATS Score -->
+        <div class="ats-score-card">
+          <div class="ats-label">ATS Match Score</div>
+          <div class="ats-number" id="ats-number">—</div>
+          <div class="ats-bar-wrap"><div class="ats-bar" id="ats-bar" style="width:0%;background:#1e9e5e"></div></div>
+          <div class="ats-verdict" id="ats-verdict"></div>
+          <div style="margin-top:16px">
+            <div style="font-size:0.75rem;color:var(--muted);margin-bottom:8px;letter-spacing:0.05em;text-transform:uppercase">Matched Keywords</div>
+            <div class="keywords-list" id="keywords-matched"></div>
+          </div>
+          <div style="margin-top:12px">
+            <div style="font-size:0.75rem;color:var(--muted);margin-bottom:8px;letter-spacing:0.05em;text-transform:uppercase">Missing Keywords</div>
+            <div class="keywords-list" id="keywords-missing"></div>
+          </div>
+        </div>
+
+        <!-- Tailored Resume -->
+        <div class="tailor-output-card">
+          <div class="tailor-output-label">Tailored Resume Summary<button class="copy-btn" onclick="copyText('tailor-resume-text')">Copy</button></div>
+          <div class="loading-dots" id="tailor-resume-loading"><span></span><span></span><span></span></div>
+          <div class="tailor-output-text" id="tailor-resume-text"></div>
+        </div>
+
+        <!-- Tailored Cover Letter -->
+        <div class="tailor-output-card">
+          <div class="tailor-output-label">Tailored Cover Letter<button class="copy-btn" onclick="copyText('tailor-cover-text')">Copy</button></div>
+          <div class="loading-dots" id="tailor-cover-loading"><span></span><span></span><span></span></div>
+          <div class="tailor-output-text" id="tailor-cover-text"></div>
+        </div>
+      </div>
+
+      <!-- PLACEHOLDER when no results yet -->
+      <div id="tailor-placeholder" style="background:#f9f9f9;border:2px dashed var(--border);border-radius:16px;padding:48px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:16px">
+        <div style="font-size:3rem">✦</div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--navy)">Your tailored application<br/>will appear here</div>
+        <div style="color:var(--muted);font-size:0.85rem;line-height:1.6;max-width:280px">Fill in your background and paste a job description to get started</div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -336,20 +492,19 @@
       <button class="plan-btn plan-btn-outline" onclick="document.getElementById('generator').scrollIntoView({behavior:'smooth'})">Try for Free</button>
     </div>
 
-    <div class="price-card" style="border-color:var(--green)">
-      <div class="featured-badge" style="background:var(--green)">Quick Top-Up</div>
-      <div class="plan-name">Micro</div>
-      <div class="plan-price"><sup>$</sup>1</div>
-      <div class="plan-period">One-time · 2 extra generations</div>
+    <div class="price-card">
+      <div class="plan-name">Single Use</div>
+      <div class="plan-price"><sup>$</sup>2</div>
+      <div class="plan-period">One-time · 1 generation</div>
       <ul class="plan-features">
-        <li>2 bonus generations</li>
+        <li>1 generation credit</li>
         <li>All 3 tools</li>
         <li>Resume, cover, LinkedIn</li>
+        <li>Job tailor included</li>
         <li>No expiry</li>
         <li class="no">Unlimited use</li>
-        <li class="no">30-day access</li>
       </ul>
-      <button class="plan-btn plan-btn-outline" onclick="checkout('single')" style="border-color:var(--navy);color:var(--navy)">$2 per generation</button>
+      <button class="plan-btn plan-btn-outline" onclick="checkout('single')" style="border-color:var(--navy);color:var(--navy)">Buy Single Use</button>
     </div>
 
     <div class="price-card featured">
@@ -611,6 +766,127 @@ function retryGenerate(type) {
   generate(type, originalTone);
 }
 
+
+// ── JOB TAILOR ──
+async function tailorApplication() {
+  if (!canGenerate()) { openPaywall(); return; }
+
+  const background = document.getElementById('t-background').value.trim();
+  const jobdesc = document.getElementById('t-jobdesc').value.trim();
+
+  if (!background || !jobdesc) {
+    alert('Please fill in both your background and the job description.');
+    return;
+  }
+
+  const btn = document.getElementById('tailor-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner"></div><span>Analysing job & tailoring...</span>';
+
+  // Show results, hide placeholder
+  document.getElementById('tailor-results').classList.add('visible');
+  document.getElementById('tailor-placeholder').style.display = 'none';
+  document.getElementById('tailor-resume-loading').classList.add('visible');
+  document.getElementById('tailor-cover-loading').classList.add('visible');
+  document.getElementById('tailor-resume-text').textContent = '';
+  document.getElementById('tailor-cover-text').textContent = '';
+  document.getElementById('ats-number').textContent = '—';
+  document.getElementById('ats-bar').style.width = '0%';
+  document.getElementById('ats-verdict').textContent = '';
+  document.getElementById('keywords-matched').innerHTML = '';
+  document.getElementById('keywords-missing').innerHTML = '';
+
+  // Increment usage
+  if (!isPro()) {
+    const { count } = getUsage();
+    if (count >= CONFIG.FREE_LIMIT && getSingleCredits() > 0) {
+      localStorage.setItem('hireedge_single_credits', (getSingleCredits() - 1).toString());
+    } else {
+      incrementUsage();
+    }
+  }
+  updateUsageDisplay();
+
+  const prompt = `You are an expert career coach and ATS specialist. Analyse this job description and candidate background, then return a JSON object (no markdown, no backticks, just raw JSON).
+
+CANDIDATE BACKGROUND:
+${background}
+
+JOB DESCRIPTION:
+${jobdesc}
+
+Return this exact JSON structure:
+{
+  "ats_score": <number 0-100>,
+  "ats_verdict": "<one sentence explaining the score and main gap or strength>",
+  "matched_keywords": ["keyword1", "keyword2", "keyword3", "keyword4", "keyword5"],
+  "missing_keywords": ["keyword1", "keyword2", "keyword3", "keyword4"],
+  "tailored_resume": "<3-4 sentence ATS-optimized resume summary that uses the job's exact keywords and highlights the most relevant experience. Start with the job title from the posting.>",
+  "tailored_cover": "<A compelling 3-paragraph cover letter under 220 words, tailored specifically to this role and company. Use keywords from the job description. Professional but human tone. Bold opening, specific middle, confident close.>"
+}`;
+
+  try {
+    const res = await fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt })
+    });
+    const data = await res.json();
+    const raw = data.text || '';
+
+    let parsed;
+    try {
+      const clean = raw.replace(/```json|```/g, '').trim();
+      parsed = JSON.parse(clean);
+    } catch(e) {
+      throw new Error('Could not parse AI response');
+    }
+
+    // Render ATS score
+    const score = Math.min(100, Math.max(0, parsed.ats_score || 0));
+    const numEl = document.getElementById('ats-number');
+    const barEl = document.getElementById('ats-bar');
+    numEl.textContent = score + '%';
+    numEl.className = 'ats-number ' + (score >= 70 ? 'high' : score >= 45 ? 'mid' : 'low');
+    barEl.style.width = score + '%';
+    barEl.style.background = score >= 70 ? '#1e9e5e' : score >= 45 ? '#d48c1e' : '#c0392b';
+    document.getElementById('ats-verdict').textContent = parsed.ats_verdict || '';
+
+    // Keywords
+    const matchedEl = document.getElementById('keywords-matched');
+    const missingEl = document.getElementById('keywords-missing');
+    (parsed.matched_keywords || []).forEach(k => {
+      const chip = document.createElement('span');
+      chip.className = 'keyword-chip keyword-match';
+      chip.textContent = k;
+      matchedEl.appendChild(chip);
+    });
+    (parsed.missing_keywords || []).forEach(k => {
+      const chip = document.createElement('span');
+      chip.className = 'keyword-chip keyword-missing';
+      chip.textContent = k;
+      missingEl.appendChild(chip);
+    });
+
+    // Render text outputs
+    document.getElementById('tailor-resume-loading').classList.remove('visible');
+    document.getElementById('tailor-cover-loading').classList.remove('visible');
+    typewriter(document.getElementById('tailor-resume-text'), parsed.tailored_resume || '');
+    setTimeout(() => {
+      typewriter(document.getElementById('tailor-cover-text'), parsed.tailored_cover || '');
+    }, 500);
+
+    document.getElementById('tailor-results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  } catch(err) {
+    document.getElementById('tailor-resume-loading').classList.remove('visible');
+    document.getElementById('tailor-cover-loading').classList.remove('visible');
+    document.getElementById('tailor-resume-text').textContent = 'Something went wrong. Please try again.';
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<span>✦ Tailor My Application</span>';
+  }
+}
 function typewriter(el, text) {
   let i = 0;
   function tick() { if (i < text.length) { el.textContent += text[i++]; setTimeout(tick, 12); } }
