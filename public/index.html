@@ -316,6 +316,20 @@
       <div class="auth-switch"><a onclick="switchAuthMode('login')" style="color:var(--amber);cursor:pointer">← Back to sign in</a></div>
     </div>
 
+    <!-- New password screen (shown after clicking reset link) -->
+    <div id="auth-newpassword-screen" style="display:none">
+      <div style="font-size:0.88rem;color:var(--muted);margin-bottom:20px;line-height:1.5">Enter your new password below.</div>
+      <div class="auth-field">
+        <label>New Password (min 6 characters)</label>
+        <input type="password" id="auth-new-password" placeholder="••••••••" onkeydown="if(event.key==='Enter')submitNewPassword()" />
+      </div>
+      <div class="auth-field">
+        <label>Confirm New Password</label>
+        <input type="password" id="auth-confirm-password" placeholder="••••••••" onkeydown="if(event.key==='Enter')submitNewPassword()" />
+      </div>
+      <button class="auth-submit" onclick="submitNewPassword()">Set New Password</button>
+    </div>
+
     <div id="auth-form-signup" style="display:none">
       <div class="auth-field">
         <label>Email</label>
@@ -1185,6 +1199,18 @@ async function initAuth() {
   const { data: { session } } = await sb.auth.getSession();
   if (session?.user) await setUser(session.user);
   sb.auth.onAuthStateChange(async (event, session) => {
+    if (event === 'PASSWORD_RECOVERY') {
+      // Show new password form
+      openAuth('login');
+      document.getElementById('auth-form-login').style.display = 'none';
+      document.getElementById('auth-form-signup').style.display = 'none';
+      document.getElementById('auth-confirm-screen').style.display = 'none';
+      document.getElementById('auth-forgot-screen').style.display = 'none';
+      document.getElementById('auth-newpassword-screen').style.display = 'block';
+      document.getElementById('auth-title').textContent = 'Set new password';
+      document.getElementById('auth-sub').textContent = '';
+      return;
+    }
     if (session?.user) {
       await setUser(session.user);
       if (pendingCheckoutPlan) {
@@ -1268,6 +1294,7 @@ function switchAuthMode(mode) {
   document.getElementById('auth-form-signup').style.display = mode === 'signup' ? 'block' : 'none';
   document.getElementById('auth-confirm-screen').style.display = 'none';
   document.getElementById('auth-forgot-screen').style.display = 'none';
+  document.getElementById('auth-newpassword-screen').style.display = 'none';
   if (mode === 'login') { document.getElementById('auth-title').textContent = 'Welcome back'; document.getElementById('auth-sub').textContent = 'Sign in to access your account on any device'; }
   if (mode === 'signup') { document.getElementById('auth-title').textContent = 'Create account'; document.getElementById('auth-sub').textContent = 'Join HireEdge AI free'; }
 }
@@ -1286,7 +1313,7 @@ async function submitForgotPassword() {
   const email = document.getElementById('auth-forgot-email').value.trim();
   if (!email) { showAuthError('Please enter your email address.'); return; }
   const { error } = await sb.auth.resetPasswordForEmail(email, {
-    redirectTo: window.location.origin + '/?reset=true'
+    redirectTo: window.location.origin + '/'
   });
   if (error) { showAuthError(error.message); }
   else {
@@ -1296,6 +1323,23 @@ async function submitForgotPassword() {
     if (confirmEl) confirmEl.textContent = email;
     document.getElementById('auth-title').textContent = 'Check your email';
     document.getElementById('auth-sub').textContent = '';
+  }
+}
+
+async function submitNewPassword() {
+  const sb = getSupabase();
+  const newPass = document.getElementById('auth-new-password').value;
+  const confirmPass = document.getElementById('auth-confirm-password').value;
+  if (!newPass || newPass.length < 6) { showAuthError('Password must be at least 6 characters.'); return; }
+  if (newPass !== confirmPass) { showAuthError('Passwords do not match.'); return; }
+  const { error } = await sb.auth.updateUser({ password: newPass });
+  if (error) { showAuthError(error.message); }
+  else {
+    document.getElementById('auth-newpassword-screen').style.display = 'none';
+    document.getElementById('auth-title').textContent = 'Password updated!';
+    document.getElementById('auth-sub').textContent = 'Your password has been changed. You are now signed in.';
+    showToast('Password updated successfully!');
+    setTimeout(() => closeAuth(), 2000);
   }
 }
 
