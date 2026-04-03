@@ -780,6 +780,7 @@ const CONFIG = {
 // ── AUTH STATE (declared early to avoid reference errors) ──
 var currentUser = null;
 var currentPlan = 'free';
+var currentSingleCredits = 0;
 var pendingCheckoutPlan = null;
 
 // ── USAGE TRACKING ──
@@ -803,11 +804,10 @@ function getSingleCredits() {
 
 // isPro: pack within 30 days or lifetime
 function isPro() {
-  // Check Supabase plan (currentUser declared later, use try/catch to be safe)
+  // Only pack and lifetime get unlimited access — single credits do NOT
   try {
     if (currentUser && (currentPlan === 'lifetime' || currentPlan === 'pack')) return true;
   } catch(e) {}
-  // Fallback to localStorage
   if (localStorage.getItem('hireedge_lifetime') === 'true') return true;
   const packDate = parseInt(localStorage.getItem('hireedge_pack_date') || '0');
   return packDate && (Date.now() - packDate) < CONFIG.PACK_DAYS * 24 * 60 * 60 * 1000;
@@ -821,6 +821,9 @@ function canGenerate() {
   if (isPro()) return true;
   const { count } = getUsage();
   if (count < CONFIG.FREE_LIMIT) return true;
+  // Check server-side single credits
+  if (typeof currentSingleCredits !== 'undefined' && currentSingleCredits > 0) return true;
+  // Fallback localStorage credits
   if (getSingleCredits() > 0) return true;
   return false;
 }
@@ -836,12 +839,12 @@ function updateUsageDisplay() {
     el.style.color = 'var(--amber)'; return;
   }
   const { count } = getUsage();
-  const credits = getSingleCredits();
+  const credits = (currentUser && currentSingleCredits > 0) ? currentSingleCredits : getSingleCredits();
   const freeLeft = Math.max(0, CONFIG.FREE_LIMIT - count);
   if (freeLeft > 0) {
-    el.textContent = `${freeLeft} free generation${freeLeft !== 1 ? 's' : ''} remaining — no sign-up needed`;
+    el.textContent = freeLeft + ' free generation' + (freeLeft !== 1 ? 's' : '') + ' remaining — no sign-up needed';
   } else if (credits > 0) {
-    el.textContent = `${credits} paid generation${credits !== 1 ? 's' : ''} remaining`;
+    el.textContent = credits + ' paid generation' + (credits !== 1 ? 's' : '') + ' remaining';
     el.style.color = 'var(--amber)';
   } else {
     el.textContent = 'Free generations used — $2 per use or $9 for 30 days unlimited';
@@ -1232,13 +1235,14 @@ async function initAuth() {
 async function setUser(user) {
   currentUser = user;
   const sb = getSupabase();
-  const { data } = await sb.from('users').select('plan, plan_expires_at').eq('id', user.id).single();
+  const { data } = await sb.from('users').select('plan, plan_expires_at, single_credits').eq('id', user.id).single();
   if (data) {
     if (data.plan === 'pack' && data.plan_expires_at) {
       currentPlan = new Date(data.plan_expires_at) > new Date() ? 'pack' : 'free';
     } else {
       currentPlan = data.plan || 'free';
     }
+    currentSingleCredits = data.single_credits || 0;
   }
   updateHeaderAuth();
   updateUsageDisplay();

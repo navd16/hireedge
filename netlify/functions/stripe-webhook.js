@@ -16,30 +16,46 @@ exports.handler = async (event) => {
   if (stripeEvent.type === 'checkout.session.completed') {
     const session = stripeEvent.data.object;
     const email = session.customer_email || session.customer_details?.email;
-    const plan = session.metadata?.plan || 'pack';
+
+    // Determine plan from redirect URL
+    let plan = 'pack';
+    const successUrl = session.success_url || '';
+    if (successUrl.includes('plan=single')) plan = 'single';
+    else if (successUrl.includes('plan=lifetime')) plan = 'lifetime';
+    else if (successUrl.includes('plan=pack')) plan = 'pack';
+
+    console.log(`Payment: ${email} → ${plan}`);
 
     if (email) {
       const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
 
-      // Find user by email
       const { data: users } = await supabase
         .from('users')
-        .select('id')
+        .select('id, single_credits')
         .eq('email', email);
 
       if (users && users.length > 0) {
         const userId = users[0].id;
-        const updateData = { plan };
 
-        // Set expiry for 30-day pack
-        if (plan === 'pack') {
+        if (plan === 'single') {
+          // Add 1 credit, don't change plan
+          const currentCredits = users[0].single_credits || 0;
+          await supabase.from('users').update({
+            single_credits: currentCredits + 1
+          }).eq('id', userId);
+          console.log(`Added 1 credit to ${email}`);
+        } else if (plan === 'pack') {
           const expires = new Date();
           expires.setDate(expires.getDate() + 30);
-          updateData.plan_expires_at = expires.toISOString();
+          await supabase.from('users').update({
+            plan: 'pack',
+            plan_expires_at: expires.toISOString()
+          }).eq('id', userId);
+        } else if (plan === 'lifetime') {
+          await supabase.from('users').update({
+            plan: 'lifetime'
+          }).eq('id', userId);
         }
-
-        await supabase.from('users').update(updateData).eq('id', userId);
-        console.log(`✅ Updated plan for ${email} → ${plan}`);
       }
     }
   }
