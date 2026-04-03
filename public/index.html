@@ -1181,8 +1181,16 @@ Return this exact JSON:
   }
 }
 function typewriter(el, text) {
+  // Cancel any existing animation
+  if (el._twTimer) clearTimeout(el._twTimer);
+  el.textContent = '';
   let i = 0;
-  function tick() { if (i < text.length) { el.textContent += text[i++]; setTimeout(tick, 12); } }
+  function tick() {
+    if (i < text.length) {
+      el.textContent += text[i++];
+      el._twTimer = setTimeout(tick, 12);
+    }
+  }
   tick();
 }
 function copyText(id) {
