@@ -874,27 +874,28 @@ function proceedToCheckout(plan) {
 // Handle Stripe redirect: ?success=true&plan=single|pack|lifetime
 const urlParams = new URLSearchParams(location.search);
 if (urlParams.get('success') === 'true') {
-  const plan = urlParams.get('plan') || 'pack';
-  if (plan === 'lifetime') {
-    localStorage.setItem('hireedge_lifetime', 'true');
-    showToast('🎉 Lifetime access unlocked — use HireEdge forever!');
-  } else if (plan === 'single') {
-    // Add 1 credit to localStorage (server webhook handles Supabase)
-    localStorage.setItem('hireedge_single_credits', (getSingleCredits() + 1).toString());
-    showToast('✅ 1 generation credit added!');
-    // Refresh user data from Supabase if logged in
-    if (currentUser) {
-      const sb = getSupabase();
-      const { data } = await sb.from('users').select('single_credits').eq('id', currentUser.id).single();
-      if (data) currentSingleCredits = data.single_credits || 0;
-      updateUsageDisplay();
+  (async () => {
+    const plan = urlParams.get('plan') || 'pack';
+    if (plan === 'lifetime') {
+      localStorage.setItem('hireedge_lifetime', 'true');
+      showToast('🎉 Lifetime access unlocked — use HireEdge forever!');
+    } else if (plan === 'single') {
+      localStorage.setItem('hireedge_single_credits', (getSingleCredits() + 1).toString());
+      showToast('✅ 1 generation credit added!');
+      if (currentUser) {
+        try {
+          const sb = getSupabase();
+          const { data } = await sb.from('users').select('single_credits').eq('id', currentUser.id).single();
+          if (data) { currentSingleCredits = data.single_credits || 0; }
+        } catch(e) {}
+      }
+    } else {
+      localStorage.setItem('hireedge_pack_date', Date.now().toString());
+      showToast('🎉 30-day access unlocked — unlimited generations!');
     }
-  } else {
-    localStorage.setItem('hireedge_pack_date', Date.now().toString());
-    showToast('🎉 30-day access unlocked — unlimited generations!');
-  }
-  updateUsageDisplay();
-  history.replaceState({}, '', location.pathname);
+    updateUsageDisplay();
+    history.replaceState({}, '', location.pathname);
+  })();
 }
 
 // ── TOAST ──
