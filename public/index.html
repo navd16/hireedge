@@ -879,9 +879,16 @@ if (urlParams.get('success') === 'true') {
     localStorage.setItem('hireedge_lifetime', 'true');
     showToast('🎉 Lifetime access unlocked — use HireEdge forever!');
   } else if (plan === 'single') {
-    const credits = getSingleCredits() + 1;
-    localStorage.setItem('hireedge_single_credits', credits.toString());
+    // Add 1 credit to localStorage (server webhook handles Supabase)
+    localStorage.setItem('hireedge_single_credits', (getSingleCredits() + 1).toString());
     showToast('✅ 1 generation credit added!');
+    // Refresh user data from Supabase if logged in
+    if (currentUser) {
+      const sb = getSupabase();
+      const { data } = await sb.from('users').select('single_credits').eq('id', currentUser.id).single();
+      if (data) currentSingleCredits = data.single_credits || 0;
+      updateUsageDisplay();
+    }
   } else {
     localStorage.setItem('hireedge_pack_date', Date.now().toString());
     showToast('🎉 30-day access unlocked — unlimited generations!');
@@ -946,6 +953,25 @@ async function generate(type, toneOverride) {
     prompt = `Write a LinkedIn About section for ${name}, a ${title}. What they do: ${what}. Superpower: ${superpower}. Style: ${style}. 100-150 words. First person. No hashtags. Bold hook opening. Don't start with "I am".`;
   }
 
+  // Deduct usage BEFORE API call to prevent abuse
+  if (!isPro()) {
+    const { count } = getUsage();
+    if (count >= CONFIG.FREE_LIMIT) {
+      if (currentUser && currentSingleCredits > 0) {
+        currentSingleCredits--;
+        try {
+          const sb = getSupabase();
+          await sb.from('users').update({ single_credits: currentSingleCredits }).eq('id', currentUser.id);
+        } catch(e) { console.error('Credit deduct error:', e); }
+      } else if (getSingleCredits() > 0) {
+        localStorage.setItem('hireedge_single_credits', (getSingleCredits() - 1).toString());
+      }
+    } else {
+      incrementUsage();
+    }
+    updateUsageDisplay();
+  }
+
   btn.disabled = true;
   btn.innerHTML = '<div class="spinner"></div><span>Generating...</span>';
   output.classList.add('visible');
@@ -961,16 +987,7 @@ async function generate(type, toneOverride) {
     const data = await res.json();
     const text = data.text || 'Something went wrong. Please try again.';
     loading.classList.remove('visible');
-    // Only count successful generations
-    if (!isPro()) {
-      const { count } = getUsage();
-      if (count >= CONFIG.FREE_LIMIT && getSingleCredits() > 0) {
-        localStorage.setItem('hireedge_single_credits', (getSingleCredits() - 1).toString());
-      } else {
-        incrementUsage();
-      }
-      updateUsageDisplay();
-    }
+
     document.getElementById(type + '-retry').classList.add('visible');
     typewriter(textEl, text);
   } catch (err) {
@@ -1017,6 +1034,25 @@ async function tailorApplication() {
   if (!background || !jobdesc) {
     alert('Please fill in both your background and the job description.');
     return;
+  }
+
+  // Deduct usage BEFORE API call
+  if (!isPro()) {
+    const { count } = getUsage();
+    if (count >= CONFIG.FREE_LIMIT) {
+      if (currentUser && currentSingleCredits > 0) {
+        currentSingleCredits--;
+        try {
+          const sb = getSupabase();
+          await sb.from('users').update({ single_credits: currentSingleCredits }).eq('id', currentUser.id);
+        } catch(e) { console.error('Credit deduct error:', e); }
+      } else if (getSingleCredits() > 0) {
+        localStorage.setItem('hireedge_single_credits', (getSingleCredits() - 1).toString());
+      }
+    } else {
+      incrementUsage();
+    }
+    updateUsageDisplay();
   }
 
   const btn = document.getElementById('tailor-btn');
@@ -1154,16 +1190,7 @@ Return this exact JSON:
     document.getElementById('optimised-score-line').textContent =
       `Using this version → estimated ${p.after_score || score + 15}% match ↓`;
 
-    // Only count successful generations
-    if (!isPro()) {
-      const { count } = getUsage();
-      if (count >= CONFIG.FREE_LIMIT && getSingleCredits() > 0) {
-        localStorage.setItem('hireedge_single_credits', (getSingleCredits() - 1).toString());
-      } else {
-        incrementUsage();
-      }
-      updateUsageDisplay();
-    }
+
     document.getElementById('tailor-resume-loading').classList.remove('visible');
     document.getElementById('tailor-cover-loading').classList.remove('visible');
     typewriter(document.getElementById('tailor-resume-text'), p.tailored_resume || '');
