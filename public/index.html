@@ -1245,10 +1245,13 @@ async function setUser(user) {
   const sb = getSupabase();
   const { data } = await sb.from('users').select('plan, plan_expires_at, single_credits').eq('id', user.id).single();
   if (data) {
+    // Only pack and lifetime grant Pro access — single does NOT
     if (data.plan === 'pack' && data.plan_expires_at) {
       currentPlan = new Date(data.plan_expires_at) > new Date() ? 'pack' : 'free';
+    } else if (data.plan === 'lifetime') {
+      currentPlan = 'lifetime';
     } else {
-      currentPlan = data.plan || 'free';
+      currentPlan = 'free'; // single, null, anything else = free
     }
     currentSingleCredits = data.single_credits || 0;
   }
