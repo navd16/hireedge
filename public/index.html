@@ -246,8 +246,16 @@
     .price-card { padding: 32px 24px; }
     .hero-stats { gap: 20px; }
     footer { flex-direction: column; gap: 12px; padding: 32px 20px; text-align: center; }
+    .problem-grid { grid-template-columns: 1fr !important; gap: 16px; }
+    .how-grid { grid-template-columns: 1fr !important; gap: 24px; }
+    [style*="padding:72px 48px"] { padding: 48px 20px !important; }
     .tailor-section { padding: 48px 20px; }
+    .problem-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
+    .how-grid { grid-template-columns: 1fr !important; gap: 24px !important; }
+    .section-pad { padding: 48px 20px !important; }
     .tailor-grid { grid-template-columns: 1fr !important; gap: 24px; }
+    .problem-grid { grid-template-columns: 1fr !important; gap: 16px; }
+    .how-grid { grid-template-columns: 1fr !important; gap: 24px; }
     .tailor-input-col { gap: 16px; }
     .ats-score-card { padding: 24px 16px; }
     .ats-number { font-size: 3.5rem; }
@@ -480,12 +488,12 @@
 
 
 <!-- WHY NOT GETTING INTERVIEWS -->
-<div style="background:#fff;padding:72px 48px;border-bottom:1px solid var(--border)">
+<div style="background:#fff;padding:72px 48px;border-bottom:1px solid var(--border)" class="section-pad">
   <div style="max-width:1000px;margin:0 auto;text-align:center">
     <div class="section-label">The Problem</div>
     <h2>Why you're not getting <em>interviews</em></h2>
     <p style="color:var(--muted);font-size:0.95rem;margin-top:12px;max-width:520px;margin-left:auto;margin-right:auto">Most applications fail before a human ever reads them. Here's what's working against you:</p>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px">
+    <div class="problem-grid">
       <div style="background:#fff8f8;border:1.5px solid rgba(192,57,43,0.15);border-radius:14px;padding:32px 24px;text-align:center">
         <div style="font-size:2.2rem;margin-bottom:16px">🤖</div>
         <div style="font-weight:700;color:var(--navy);font-size:1rem;margin-bottom:8px">ATS Rejecting You</div>
@@ -506,11 +514,11 @@
 </div>
 
 <!-- HOW IT WORKS -->
-<div id="how-it-works" style="background:#f9f7f4;padding:72px 48px;border-bottom:1px solid var(--border)">
+<div id="how-it-works" style="background:#f9f7f4;border-bottom:1px solid var(--border)" class="section-pad">
   <div style="max-width:900px;margin:0 auto;text-align:center">
     <div class="section-label">How It Works</div>
-    <h2>Fix your CV in <em>3 steps</em></h2>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-top:48px;align-items:start">
+    <h2>Fix your CV in <em>3 steps</em> and download</h2>
+    <div class="how-grid">
       <div style="text-align:center">
         <div style="width:56px;height:56px;background:var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.3rem;font-weight:900;color:#fff;font-family:'Playfair Display',serif">1</div>
         <div style="font-weight:700;color:var(--navy);margin-bottom:8px">Upload Your CV</div>
