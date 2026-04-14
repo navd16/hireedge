@@ -1,61 +1,84 @@
-// netlify/functions/generate.js
-// Secure server-side proxy for Anthropic API — your key never touches the browser
+const Anthropic = require('@anthropic-ai/sdk');
 
 exports.handler = async (event) => {
+  if (event.httpMethod !== 'POST') return { statusCode: 405, body: 'Method not allowed' };
+
   const headers = {
-    'Access-Control-Allow-Origin': process.env.ALLOWED_ORIGIN || '*',
+    'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type',
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    'Content-Type': 'application/json',
   };
 
-  // Handle preflight
-  if (event.httpMethod === 'OPTIONS') {
-    return { statusCode: 200, headers, body: '' };
-  }
-
-  if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, headers, body: JSON.stringify({ error: 'Method not allowed' }) };
-  }
-
-  let body;
-  try {
-    body = JSON.parse(event.body);
-  } catch {
-    return { statusCode: 400, headers, body: JSON.stringify({ error: 'Invalid JSON' }) };
-  }
-
-  const { prompt } = body;
-  if (!prompt) {
-    return { statusCode: 400, headers, body: JSON.stringify({ error: 'Prompt is required' }) };
-  }
+  if (event.httpMethod === 'OPTIONS') return { statusCode: 200, headers };
 
   try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': process.env.ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01',
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        messages: [{ role: 'user', content: prompt }],
-      }),
-    });
+    const body = JSON.parse(event.body);
+    const { prompt, fileBase64, fileType } = body;
 
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.error?.message || 'Anthropic API error');
+    if (!prompt) {
+      return { statusCode: 400, headers, body: JSON.stringify({ error: 'Missing prompt' }) };
     }
 
-    const text = data.content?.map(b => b.text || '').join('') || '';
-    return { statusCode: 200, headers, body: JSON.stringify({ text }) };
+    const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
-  } catch (error) {
-    console.error('Generate error:', error);
-    return { statusCode: 500, headers, body: JSON.stringify({ error: 'Generation failed. Please try again.' }) };
+    let messages;
+
+    // If a file is attached, send as document/image
+    if (fileBase64 && fileType) {
+      let mediaType;
+      let contentType;
+
+      if (fileType === 'pdf') {
+        mediaType = 'application/pdf';
+        contentType = 'document';
+      } else {
+        // For docx, send as text extraction request without file
+        // Just use the prompt directly
+        messages = [{ role: 'user', content: prompt }];
+      }
+
+      if (fileType === 'pdf') {
+        messages = [{
+          role: 'user',
+          content: [
+            {
+              type: 'document',
+              source: {
+                type: 'base64',
+                media_type: mediaType,
+                data: fileBase64
+              }
+            },
+            { type: 'text', text: prompt }
+          ]
+        }];
+      }
+    } else {
+      messages = [{ role: 'user', content: prompt }];
+    }
+
+    const response = await client.messages.create({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 1500,
+      messages
+    });
+
+    const text = response.content
+      .filter(block => block.type === 'text')
+      .map(block => block.text)
+      .join('');
+
+    return {
+      statusCode: 200,
+      headers: { ...headers, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text })
+    };
+
+  } catch (err) {
+    console.error('Error:', err);
+    return {
+      statusCode: 500,
+      headers,
+      body: JSON.stringify({ error: err.message })
+    };
   }
 };
