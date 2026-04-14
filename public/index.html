@@ -136,6 +136,17 @@
   .retry-btn { background: var(--navy); color: #fff; padding: 7px 18px; border-radius: 7px; font-size: 0.82rem; font-weight: 500; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; white-space: nowrap; transition: background 0.2s; flex-shrink: 0; }
   .retry-btn:hover { background: #253d6a; }
 
+
+  /* ── CV UPLOAD ── */
+  .cv-upload-zone { border: 2px dashed var(--border); border-radius: 10px; padding: 20px; text-align: center; cursor: pointer; transition: all 0.2s; background: #fafafa; }
+  .cv-upload-zone:hover { border-color: var(--amber); background: rgba(212,140,30,0.04); }
+  .cv-upload-zone.has-file { border-color: #1e9e5e; background: rgba(30,158,94,0.05); }
+  .cv-upload-zone input[type=file] { display: none; }
+  .download-cv-btn { width: 100%; background: #1e9e5e; color: #fff; padding: 16px; border-radius: 10px; font-size: 0.95rem; font-weight: 500; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; display: none; align-items: center; justify-content: center; gap: 10px; transition: background 0.2s, transform 0.15s; margin-top: 8px; }
+  .download-cv-btn:hover { background: #178a52; transform: translateY(-2px); }
+  .download-cv-btn.visible { display: flex; }
+  .problem-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 48px; }
+  .how-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 32px; margin-top: 48px; }
   /* ── JOB TAILOR ── */
   .tailor-section { background: linear-gradient(135deg, #f8f9ff 0%, #fff 100%); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 80px 48px; }
   .tailor-input-col .field label { font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); font-weight: 500; display: block; margin-bottom: 8px; }
@@ -456,8 +467,8 @@
   </div>
 
   <div class="hero-cta">
-    <button class="btn-primary" onclick="document.getElementById('job-tailor').scrollIntoView({behavior:'smooth'})">Tailor My Application →</button>
-    <button class="btn-outline" onclick="document.getElementById('generator').scrollIntoView({behavior:'smooth'})">Use Individual Tools</button>
+    <button class="btn-primary" onclick="document.getElementById('job-tailor').scrollIntoView({behavior:'smooth'})">Tailor My CV Now →</button>
+    <button class="btn-outline" onclick="document.getElementById('how-it-works').scrollIntoView({behavior:'smooth'})">See How It Works</button>
   </div>
   <div class="hero-stats">
     <div class="stat"><div class="stat-num">14,200+</div><div class="stat-label">Resumes Generated</div></div>
@@ -466,6 +477,59 @@
   </div>
 </div>
 
+
+
+<!-- WHY NOT GETTING INTERVIEWS -->
+<div style="background:#fff;padding:72px 48px;border-bottom:1px solid var(--border)">
+  <div style="max-width:1000px;margin:0 auto;text-align:center">
+    <div class="section-label">The Problem</div>
+    <h2>Why you're not getting <em>interviews</em></h2>
+    <p style="color:var(--muted);font-size:0.95rem;margin-top:12px;max-width:520px;margin-left:auto;margin-right:auto">Most applications fail before a human ever reads them. Here's what's working against you:</p>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px">
+      <div style="background:#fff8f8;border:1.5px solid rgba(192,57,43,0.15);border-radius:14px;padding:32px 24px;text-align:center">
+        <div style="font-size:2.2rem;margin-bottom:16px">🤖</div>
+        <div style="font-weight:700;color:var(--navy);font-size:1rem;margin-bottom:8px">ATS Rejecting You</div>
+        <div style="color:var(--muted);font-size:0.85rem;line-height:1.6">75% of CVs are rejected by software before a recruiter sees them. Missing keywords = instant rejection.</div>
+      </div>
+      <div style="background:#fff8f8;border:1.5px solid rgba(192,57,43,0.15);border-radius:14px;padding:32px 24px;text-align:center">
+        <div style="font-size:2.2rem;margin-bottom:16px">📄</div>
+        <div style="font-weight:700;color:var(--navy);font-size:1rem;margin-bottom:8px">Generic CV</div>
+        <div style="color:var(--muted);font-size:0.85rem;line-height:1.6">Sending the same CV to every job tells recruiters you didn't bother. Tailored CVs get 3x more callbacks.</div>
+      </div>
+      <div style="background:#fff8f8;border:1.5px solid rgba(192,57,43,0.15);border-radius:14px;padding:32px 24px;text-align:center">
+        <div style="font-size:2.2rem;margin-bottom:16px">⚡</div>
+        <div style="font-weight:700;color:var(--navy);font-size:1rem;margin-bottom:8px">Weak Bullet Points</div>
+        <div style="color:var(--muted);font-size:0.85rem;line-height:1.6">"Managed projects" means nothing. Recruiters spend 7 seconds per CV — numbers and results are what stop the scroll.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div id="how-it-works" style="background:#f9f7f4;padding:72px 48px;border-bottom:1px solid var(--border)">
+  <div style="max-width:900px;margin:0 auto;text-align:center">
+    <div class="section-label">How It Works</div>
+    <h2>Fix your CV in <em>3 steps</em></h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-top:48px;align-items:start">
+      <div style="text-align:center">
+        <div style="width:56px;height:56px;background:var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.3rem;font-weight:900;color:#fff;font-family:'Playfair Display',serif">1</div>
+        <div style="font-weight:700;color:var(--navy);margin-bottom:8px">Upload Your CV</div>
+        <div style="color:var(--muted);font-size:0.85rem;line-height:1.6">Upload your existing CV — PDF or Word. HireEdge reads it so you don't have to retype anything.</div>
+      </div>
+      <div style="text-align:center">
+        <div style="width:56px;height:56px;background:var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.3rem;font-weight:900;color:#fff;font-family:'Playfair Display',serif">2</div>
+        <div style="font-weight:700;color:var(--navy);margin-bottom:8px">Paste Job Description</div>
+        <div style="color:var(--muted);font-size:0.85rem;line-height:1.6">Paste the full job posting. HireEdge analyses every requirement and keyword the employer is looking for.</div>
+      </div>
+      <div style="text-align:center">
+        <div style="width:56px;height:56px;background:var(--amber);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.3rem;font-weight:900;color:#fff;font-family:'Playfair Display',serif">3</div>
+        <div style="font-weight:700;color:var(--navy);margin-bottom:8px">Download Tailored CV</div>
+        <div style="color:var(--muted);font-size:0.85rem;line-height:1.6">Get a professionally formatted Word document — rewritten, keyword-optimised, and ready to submit.</div>
+      </div>
+    </div>
+    <button class="btn-primary" onclick="document.getElementById('job-tailor').scrollIntoView({behavior:'smooth'})" style="margin-top:40px">Start For Free →</button>
+  </div>
+</div>
 
 <!-- JOB TAILOR — MAIN FEATURE -->
 <div class="tailor-section" id="job-tailor">
@@ -478,18 +542,31 @@
       <!-- INPUT COLUMN -->
       <div class="tailor-input-col">
         <div class="tailor-input-wrap">
+          <!-- CV Upload -->
           <div class="field">
-            <label>Your Background (brief summary)</label>
-            <textarea id="t-background" placeholder="e.g. 8 years in software engineering, led teams of 5, built SaaS products, expert in Python and React, increased revenue by 40% at last role..." style="min-height:110px;background:#f9f7f4;border:1.5px solid var(--border);border-radius:10px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.92rem;padding:12px 16px;outline:none;resize:none;width:100%;line-height:1.6;transition:border-color 0.2s,box-shadow 0.2s" onfocus="this.style.borderColor='var(--amber)';this.style.boxShadow='0 0 0 3px rgba(212,140,30,0.1)'" onblur="this.style.borderColor='var(--border)';this.style.boxShadow='none'"></textarea>
+            <label>Upload Your CV (PDF or Word)</label>
+            <div class="cv-upload-zone" id="cv-upload-zone" onclick="document.getElementById('cv-file-input').click()">
+              <input type="file" id="cv-file-input" accept=".pdf,.doc,.docx" onchange="handleCVUpload(this)" />
+              <div id="cv-upload-text">
+                <div style="font-size:1.8rem;margin-bottom:8px">📄</div>
+                <div style="font-size:0.88rem;color:var(--muted)">Click to upload your CV</div>
+                <div style="font-size:0.75rem;color:var(--muted);margin-top:4px">PDF or Word (.doc, .docx)</div>
+              </div>
+            </div>
+            <div style="text-align:center;margin:8px 0;font-size:0.75rem;color:var(--muted)">— or —</div>
+            <textarea id="t-background" placeholder="Paste your background manually: e.g. 8 years in software engineering, led teams of 5, expert in Python and React..." style="min-height:80px;background:#f9f7f4;border:1.5px solid var(--border);border-radius:10px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.92rem;padding:12px 16px;outline:none;resize:none;width:100%;line-height:1.6;transition:border-color 0.2s,box-shadow 0.2s" onfocus="this.style.borderColor='var(--amber)';this.style.boxShadow='0 0 0 3px rgba(212,140,30,0.1)'" onblur="this.style.borderColor='var(--border)';this.style.boxShadow='none'"></textarea>
           </div>
           <div style="height:1px;background:var(--border)"></div>
           <div class="field">
             <label>Job Description (paste the full job posting)</label>
-            <textarea id="t-jobdesc" placeholder="Paste the full job description here — including requirements, responsibilities, and any keywords..." style="min-height:180px;background:#f9f7f4;border:1.5px solid var(--border);border-radius:10px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.92rem;padding:12px 16px;outline:none;resize:none;width:100%;line-height:1.6;transition:border-color 0.2s,box-shadow 0.2s" onfocus="this.style.borderColor='var(--amber)';this.style.boxShadow='0 0 0 3px rgba(212,140,30,0.1)'" onblur="this.style.borderColor='var(--border)';this.style.boxShadow='none'"></textarea>
+            <textarea id="t-jobdesc" placeholder="Paste the full job description here — including requirements, responsibilities, and any keywords..." style="min-height:160px;background:#f9f7f4;border:1.5px solid var(--border);border-radius:10px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.92rem;padding:12px 16px;outline:none;resize:none;width:100%;line-height:1.6;transition:border-color 0.2s,box-shadow 0.2s" onfocus="this.style.borderColor='var(--amber)';this.style.boxShadow='0 0 0 3px rgba(212,140,30,0.1)'" onblur="this.style.borderColor='var(--border)';this.style.boxShadow='none'"></textarea>
           </div>
         </div>
         <button class="tailor-btn" id="tailor-btn" onclick="tailorApplication()">
-          <span>✦ Tailor My Application</span>
+          <span>✦ Analyse & Tailor</span>
+        </button>
+        <button class="download-cv-btn" id="download-cv-btn" onclick="downloadTailoredCV()">
+          <span>⬇ Download Tailored CV (.docx)</span>
         </button>
         <p style="font-size:0.78rem;color:var(--muted);text-align:center;margin-top:-8px">Uses 1 generation credit · All 3 tools unlocked</p>
       </div>
@@ -1198,6 +1275,9 @@ Return this exact JSON:
     setTimeout(() => typewriter(document.getElementById('tailor-cover-text'), p.tailored_cover || ''), 600);
 
     document.getElementById('tailor-results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // Show download button
+    tailoredCVBase64 = 'ready';
+    document.getElementById('download-cv-btn').classList.add('visible');
 
   } catch(err) {
     document.getElementById('tailor-resume-loading').classList.remove('visible');
@@ -1221,6 +1301,107 @@ function typewriter(el, text) {
   }
   tick();
 }
+
+// ── CV UPLOAD & DOWNLOAD ──
+var uploadedCVText = '';
+var tailoredCVBase64 = '';
+var tailoredCVName = '';
+
+async function handleCVUpload(input) {
+  const file = input.files[0];
+  if (!file) return;
+
+  const zone = document.getElementById('cv-upload-zone');
+  const uploadText = document.getElementById('cv-upload-text');
+
+  zone.classList.add('has-file');
+  uploadText.innerHTML = '<div style="font-size:1.5rem;margin-bottom:6px">✅</div><div style="font-size:0.88rem;color:#1e9e5e;font-weight:500">' + file.name + '</div><div style="font-size:0.75rem;color:var(--muted);margin-top:2px">Click to change</div>';
+
+  // Read file as base64
+  const reader = new FileReader();
+  reader.onload = async function(e) {
+    const base64 = e.target.result.split(',')[1];
+    const fileType = file.name.endsWith('.pdf') ? 'pdf' : 'docx';
+
+    // Extract text from the file using Claude
+    try {
+      uploadText.innerHTML = '<div style="font-size:1.5rem;margin-bottom:6px">⏳</div><div style="font-size:0.88rem;color:var(--muted)">Reading your CV...</div>';
+
+      const res = await fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          prompt: 'Extract ALL text content from this CV/resume document. Return the full text with proper formatting — name, contact, summary, experience with dates, education, skills. Return plain text only, no JSON, no markdown.',
+          fileBase64: base64,
+          fileType: fileType
+        })
+      });
+      const data = await res.json();
+      uploadedCVText = data.text || '';
+      // Also put in background textarea as fallback display
+      if (uploadedCVText) {
+        document.getElementById('t-background').value = uploadedCVText;
+        uploadText.innerHTML = '<div style="font-size:1.5rem;margin-bottom:6px">✅</div><div style="font-size:0.88rem;color:#1e9e5e;font-weight:500">' + file.name + '</div><div style="font-size:0.75rem;color:var(--muted);margin-top:2px">CV read successfully · Click to change</div>';
+      }
+    } catch(err) {
+      uploadText.innerHTML = '<div style="font-size:1.5rem;margin-bottom:6px">⚠️</div><div style="font-size:0.88rem;color:#c0392b">Could not read file — please paste your background below</div>';
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
+async function downloadTailoredCV() {
+  if (!tailoredCVBase64) {
+    showToast('Please tailor your application first');
+    return;
+  }
+
+  const jobdesc = document.getElementById('t-jobdesc').value.trim();
+  const cvText = uploadedCVText || document.getElementById('t-background').value.trim();
+
+  if (!cvText || !jobdesc) {
+    showToast('Please upload your CV and paste a job description first');
+    return;
+  }
+
+  const btn = document.getElementById('download-cv-btn');
+  btn.innerHTML = '<div class="spinner" style="border-color:rgba(255,255,255,0.3);border-top-color:#fff"></div><span>Generating Word document...</span>';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch('/.netlify/functions/generate-cv', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ cvText, jobDescription: jobdesc })
+    });
+
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+
+    // Download the docx
+    const byteChars = atob(data.docx);
+    const byteArray = new Uint8Array(byteChars.length);
+    for (let i = 0; i < byteChars.length; i++) byteArray[i] = byteChars.charCodeAt(i);
+    const blob = new Blob([byteArray], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = (data.name || 'Tailored_CV').replace(/\s+/g, '_') + '_HireEdge.docx';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    showToast('✅ Your tailored CV has been downloaded!');
+  } catch(err) {
+    showToast('Error generating CV — please try again');
+    console.error(err);
+  } finally {
+    btn.innerHTML = '<span>⬇ Download Tailored CV (.docx)</span>';
+    btn.disabled = false;
+  }
+}
+
 function copyText(id) {
   navigator.clipboard.writeText(document.getElementById(id).textContent).then(() => showToast('Copied to clipboard'));
 }
