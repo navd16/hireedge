@@ -149,10 +149,11 @@
   .how-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 32px; margin-top: 48px; }
   /* ── JOB TAILOR ── */
   .tailor-section { background: linear-gradient(135deg, #f8f9ff 0%, #fff 100%); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 80px 48px; }
+  .tailor-inner { max-width: 1200px; margin: 0 auto; }
   .tailor-input-col .field label { font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); font-weight: 500; display: block; margin-bottom: 8px; }
   .tailor-input-wrap { background: #fff; border: 1.5px solid var(--border); border-radius: 14px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); display: flex; flex-direction: column; gap: 20px; }
   .tailor-inner { max-width: 1200px; margin: 0 auto; }
-  .tailor-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-top: 48px; align-items: start; }
+  .tailor-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 40px; align-items: start; width: 100%; }
   .tailor-input-col { display: flex; flex-direction: column; gap: 20px; }
   .tailor-results { display: none; flex-direction: column; gap: 20px; }
   .tailor-results.visible { display: flex; }
@@ -250,6 +251,8 @@
     .how-grid { grid-template-columns: 1fr !important; gap: 24px; }
     [style*="padding:72px 48px"] { padding: 48px 20px !important; }
     .tailor-section { padding: 48px 20px; }
+    h2 { white-space: normal !important; font-size: 2rem !important; }
+    .tailor-grid { grid-template-columns: 1fr !important; }
     .problem-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
     .how-grid { grid-template-columns: 1fr !important; gap: 24px !important; }
     .section-pad { padding: 48px 20px !important; }
@@ -543,8 +546,8 @@
 <div class="tailor-section" id="job-tailor">
   <div class="tailor-inner">
     <div class="section-label">✦ New — Most Powerful Feature</div>
-    <h2>Paste a job description.<br/>Get a <em>tailored</em> application.</h2>
-    <p style="color:var(--muted);font-size:0.95rem;margin-top:12px;max-width:560px">Most applicants send generic CVs. HireEdge rewrites yours to match the exact language, keywords and requirements of the job — so you get past ATS filters and stand out to recruiters.</p>
+    <h2>Paste a job description. Get a <em>tailored</em> application.</h2>
+    <p style="color:var(--muted);font-size:0.95rem;margin-top:12px;max-width:600px">Most applicants send generic CVs. HireEdge rewrites yours to match the exact language, keywords and requirements of the job — so you get past ATS filters and stand out to recruiters.</p>
 
     <div class="tailor-grid">
       <!-- INPUT COLUMN -->
@@ -676,7 +679,7 @@
   <div class="tool-wrapper">
     <div class="tool-header">
       <div class="section-label">AI Generator</div>
-      <h2>Your <em>perfect</em> application,<br/>written in seconds</h2>
+      <h2 style="font-size:2.4rem">Your <em>perfect</em> application, written in seconds</h2>
       <p style="color:var(--muted);font-size:0.85rem;margin-top:12px" id="usage-display"></p>
     </div>
     <div class="tabs">
@@ -777,7 +780,7 @@
 <!-- PRICING -->
 <section id="pricing">
   <div class="section-label">Pricing</div>
-  <h2>Built for <em>job seekers</em>,<br/>not subscriptions</h2>
+  <h2 style="font-size:2.4rem;white-space:nowrap">Built for <em>job seekers</em>, not subscriptions</h2>
   <p style="color:var(--muted);margin-top:16px;font-size:0.95rem;max-width:480px">Start free, pay only for what you need. No subscriptions, ever.</p>
   <div class="pricing-grid" style="grid-template-columns:repeat(4,1fr)">
 
