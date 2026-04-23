@@ -1645,6 +1645,11 @@ const privacyContent = `<div class="legal-h1">Privacy Policy</div><div class="le
 
 function showPage(type) { document.getElementById('legal-content').innerHTML = type === 'terms' ? termsContent : privacyContent; document.getElementById('legal-overlay').style.display = 'block'; window.scrollTo(0,0); return false; }
 function hidePage() { document.getElementById('legal-overlay').style.display = 'none'; }
+
+// ── SCROLL TO TOP ON REFRESH ──
+if (history.scrollRestoration) history.scrollRestoration = 'manual';
+window.addEventListener('beforeunload', function() { window.scrollTo(0, 0); });
+document.addEventListener('DOMContentLoaded', function() { window.scrollTo(0, 0); });
 </script>
 </body>
 </html>
