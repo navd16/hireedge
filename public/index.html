@@ -4,6 +4,14 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>HireEdge AI — Land Your Dream Job Faster</title>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4WC54Z62Q6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-4WC54Z62Q6');
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
@@ -956,6 +964,7 @@ function checkout(plan) {
   proceedToCheckout(plan);
 }
 function proceedToCheckout(plan) {
+  gtag('event', 'checkout_click', { event_category: 'monetisation', plan: plan });
   const urls = { single: CONFIG.STRIPE_SINGLE_LINK, pack: CONFIG.STRIPE_PACK_LINK, lifetime: CONFIG.STRIPE_LIFETIME_LINK };
   let url = urls[plan] || '#';
   if (typeof currentUser !== 'undefined' && currentUser?.email) url += (url.includes('?') ? '&' : '?') + 'prefilled_email=' + encodeURIComponent(currentUser.email);
@@ -1007,6 +1016,7 @@ function switchTab(name, el) {
 
 // ── GENERATE ──
 async function generate(type, toneOverride) {
+  gtag('event', 'generate_click', { event_category: 'engagement', tool: type });
   if (!canGenerate()) {
     document.getElementById(type + '-retry').classList.remove('visible');
     openPaywall();
@@ -1118,6 +1128,7 @@ function retryGenerate(type) {
 
 // ── JOB TAILOR ──
 async function tailorApplication() {
+  gtag('event', 'tailor_click', { event_category: 'engagement' });
   if (!canGenerate()) { openPaywall(); return; }
 
   const background = document.getElementById('t-background').value.trim();
@@ -1365,6 +1376,7 @@ async function handleCVUpload(input) {
 }
 
 async function downloadTailoredCV() {
+  gtag('event', 'cv_download', { event_category: 'engagement' });
   if (!tailoredCVBase64) {
     showToast('Please tailor your application first');
     return;
@@ -1582,6 +1594,7 @@ async function submitNewPassword() {
 }
 
 async function signInWithGoogle() {
+  gtag('event', 'login_attempt', { method: 'google' });
   const sb = getSupabase();
   const { error } = await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.origin + window.location.pathname } });
   if (error) showAuthError(error.message);
