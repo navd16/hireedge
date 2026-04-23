@@ -251,7 +251,8 @@
     .how-grid { grid-template-columns: 1fr !important; gap: 24px; }
     [style*="padding:72px 48px"] { padding: 48px 20px !important; }
     .tailor-section { padding: 48px 20px; }
-    h2 { white-space: normal !important; font-size: 2rem !important; }
+    h1 { font-size: 2.4rem !important; }
+    h2 { white-space: normal !important; font-size: 1.8rem !important; }
     .tailor-grid { grid-template-columns: 1fr !important; }
     .problem-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
     .how-grid { grid-template-columns: 1fr !important; gap: 24px !important; }
@@ -432,12 +433,12 @@
   <a href="#pricing" onclick="document.getElementById('mobile-menu').classList.remove('open')" style="background:var(--navy);color:#fff;padding:14px 36px;border-radius:8px;font-size:1.2rem">Get Started</a>
 </div>
 
-<div class="hero">
+<div class="hero" style="text-align:center">
   <div class="hero-glow"></div>
   <div class="hero-glow2"></div>
   <div class="eyebrow">Powered by AI</div>
   <h1>Tailor your CV to <em>any job</em><br/>in seconds</h1>
-  <p class="hero-sub">Paste a job description and HireEdge tells you exactly how well you match — then rewrites your CV to get you to 90%+.</p>
+  <p class="hero-sub" style="max-width:600px;margin:16px auto 0">Paste a job description and HireEdge tells you exactly how well you match — then rewrites your CV to get you to 90%+.</p>
 
   <!-- BEFORE/AFTER VISUAL -->
   <div style="display:flex;align-items:center;gap:12px;margin:32px 0 24px;animation:fadeUp 0.7s 0.25s ease both">
@@ -482,9 +483,9 @@
     <button class="btn-outline" onclick="document.getElementById('how-it-works').scrollIntoView({behavior:'smooth'})">See How It Works</button>
   </div>
   <div class="hero-stats">
-    <div class="stat"><div class="stat-num">14,200+</div><div class="stat-label">Resumes Generated</div></div>
-    <div class="stat"><div class="stat-num">3×</div><div class="stat-label">More Interviews</div></div>
-    <div class="stat"><div class="stat-num">48 hrs</div><div class="stat-label">Avg. First Response</div></div>
+    <div class="stat"><div class="stat-num">Free</div><div class="stat-label">5 Generations</div></div>
+    <div class="stat"><div class="stat-num">60s</div><div class="stat-label">To Tailor Your CV</div></div>
+    <div class="stat"><div class="stat-num">ATS</div><div class="stat-label">Score + Fix</div></div>
   </div>
 </div>
 
@@ -494,7 +495,7 @@
 <div style="background:#fff;padding:72px 48px;border-bottom:1px solid var(--border)" class="section-pad">
   <div style="max-width:1000px;margin:0 auto;text-align:center">
     <div class="section-label">The Problem</div>
-    <h2>Why you're not getting <em>interviews</em></h2>
+    <h2 style="font-size:2.2rem">Why you're not getting <em>interviews</em></h2>
     <p style="color:var(--muted);font-size:0.95rem;margin-top:12px;max-width:520px;margin-left:auto;margin-right:auto">Most applications fail before a human ever reads them. Here's what's working against you:</p>
     <div class="problem-grid">
       <div style="background:#fff8f8;border:1.5px solid rgba(192,57,43,0.15);border-radius:14px;padding:32px 24px;text-align:center">
@@ -547,7 +548,7 @@
   <div class="tailor-inner">
     <div style="text-align:center;max-width:800px;margin:0 auto">
       <div class="section-label">✦ New — Most Powerful Feature</div>
-      <h2>Paste a job description. Get a <em>tailored</em> application.</h2>
+      <h2 style="font-size:2rem">Paste a job description. Get a <em>tailored</em> application.</h2>
       <p style="color:var(--muted);font-size:0.95rem;margin-top:12px">Most applicants send generic CVs. HireEdge rewrites yours to match the exact language, keywords and requirements of the job — so you get past ATS filters and stand out to recruiters.</p>
     </div>
 
@@ -863,7 +864,7 @@ const CONFIG = {
   STRIPE_SINGLE_LINK: 'https://buy.stripe.com/3cI5kv4YP1on10294beZ202',      // $2 single generation
   STRIPE_PACK_LINK: 'https://buy.stripe.com/3cI7sDgHx5EDeQS1BJeZ203',          // $9 one-time 30 days
   STRIPE_LIFETIME_LINK: 'https://buy.stripe.com/fZudR1aj9ffdbEGa8feZ204',  // $79 one-time forever
-  FREE_LIMIT: 5,
+  FREE_LIMIT: 2,
   PACK_DAYS: 30,
 };
 
