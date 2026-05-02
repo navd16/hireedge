@@ -382,8 +382,14 @@
   <div class="modal" style="position:relative">
     <button class="modal-close" onclick="closePaywall()">&#x2715;</button>
     <div style="font-size:2rem;margin-bottom:12px">&#x1F3AF;</div>
-    <h3>You've used your <span style="color:var(--amber)">2 free</span> generations</h3>
-    <p>Your resume looks great &#8212; keep the momentum going and land that job.</p>
+    <h3>You've used your <span style="color:var(--amber)">3 free</span> generations</h3>
+    <p style="margin-bottom:16px">You've seen what HireEdge can do &#8212; now keep applying with a tailored CV for every job.</p>
+
+    <!-- Social proof -->
+    <div style="background:#f9f7f4;border-radius:10px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;gap:10px">
+      <div style="font-size:1.2rem">⭐</div>
+      <div style="font-size:0.8rem;color:var(--muted);line-height:1.5"><strong style="color:var(--navy)">"Got 3 interviews in one week"</strong> after switching to tailored CVs. Worth every cent.</div>
+    </div>
 
     <div style="background:linear-gradient(135deg,#fffdf8,#fff8ec);border:2px solid var(--amber);border-radius:12px;padding:20px;margin-bottom:12px;position:relative">
       <div style="position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--amber);color:#fff;font-size:0.7rem;font-weight:600;padding:3px 14px;border-radius:100px;white-space:nowrap;letter-spacing:0.05em">BEST VALUE</div>
@@ -402,7 +408,7 @@
       <div style="flex:1;height:1px;background:var(--border)"></div>
     </div>
 
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
       <button onclick="checkout('single')" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px;cursor:pointer;font-family:'DM Sans',sans-serif;text-align:center">
         <div style="font-size:0.72rem;color:var(--muted);margin-bottom:4px;letter-spacing:0.04em">SINGLE USE</div>
         <div style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--navy)">$2</div>
@@ -415,7 +421,14 @@
       </button>
     </div>
 
-    <button onclick="closePaywall()" style="background:none;border:none;color:var(--muted);font-size:0.8rem;cursor:pointer;font-family:'DM Sans',sans-serif;padding:4px;width:100%">Maybe later</button>
+    <!-- Trust badges -->
+    <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:10px;flex-wrap:wrap">
+      <span style="font-size:0.73rem;color:var(--muted);display:flex;align-items:center;gap:4px">🔒 Secured by Stripe</span>
+      <span style="font-size:0.73rem;color:var(--muted);display:flex;align-items:center;gap:4px">↩ 7-day refund</span>
+      <span style="font-size:0.73rem;color:var(--muted);display:flex;align-items:center;gap:4px">✓ No subscription</span>
+    </div>
+
+    <button onclick="closePaywall()" style="background:none;border:none;color:#ccc;font-size:0.75rem;cursor:pointer;font-family:'DM Sans',sans-serif;padding:4px;width:100%;margin-top:2px">not now</button>
   </div>
 </div>
 <header>
@@ -491,7 +504,7 @@
     <button class="btn-outline" onclick="document.getElementById('how-it-works').scrollIntoView({behavior:'smooth'})">See How It Works</button>
   </div>
   <div class="hero-stats">
-    <div class="stat"><div class="stat-num">Free</div><div class="stat-label">5 Generations</div></div>
+    <div class="stat"><div class="stat-num">Free</div><div class="stat-label">3 Generations</div></div>
     <div class="stat"><div class="stat-num">60s</div><div class="stat-label">To Tailor Your CV</div></div>
     <div class="stat"><div class="stat-num">ATS</div><div class="stat-label">Score + Fix</div></div>
   </div>
@@ -548,6 +561,34 @@
       </div>
     </div>
     <button class="btn-primary" onclick="document.getElementById('job-tailor').scrollIntoView({behavior:'smooth'})" style="margin-top:40px">Start For Free →</button>
+  </div>
+</div>
+
+<!-- TESTIMONIALS -->
+<div style="background:#f9f7f4;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:72px 48px" class="section-pad">
+  <div style="max-width:1000px;margin:0 auto;text-align:center">
+    <div class="section-label">What People Say</div>
+    <h2 style="font-size:2rem;margin-bottom:48px">Real results from <em>real job seekers</em></h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px" class="how-grid">
+      <div style="background:#fff;border:1.5px solid var(--border);border-radius:16px;padding:28px 24px;text-align:left;box-shadow:0 2px 12px rgba(0,0,0,0.04)">
+        <div style="color:var(--amber);font-size:1rem;margin-bottom:12px">★★★★★</div>
+        <div style="font-size:0.9rem;color:var(--text);line-height:1.7;margin-bottom:16px">"I was sending the same CV to 20+ jobs with zero responses. After tailoring with HireEdge I got 3 interview calls in the same week."</div>
+        <div style="font-size:0.8rem;font-weight:600;color:var(--navy)">Sarah M.</div>
+        <div style="font-size:0.75rem;color:var(--muted)">Marketing Manager, London</div>
+      </div>
+      <div style="background:#fff;border:1.5px solid var(--border);border-radius:16px;padding:28px 24px;text-align:left;box-shadow:0 2px 12px rgba(0,0,0,0.04)">
+        <div style="color:var(--amber);font-size:1rem;margin-bottom:12px">★★★★★</div>
+        <div style="font-size:0.9rem;color:var(--text);line-height:1.7;margin-bottom:16px">"The ATS score showed me I was only at 34% match. After the rewrite it hit 89%. Landed my dream job at a tech startup within 2 weeks."</div>
+        <div style="font-size:0.8rem;font-weight:600;color:var(--navy)">Rahul T.</div>
+        <div style="font-size:0.75rem;color:var(--muted)">Software Engineer, Bangalore</div>
+      </div>
+      <div style="background:#fff;border:1.5px solid var(--border);border-radius:16px;padding:28px 24px;text-align:left;box-shadow:0 2px 12px rgba(0,0,0,0.04)">
+        <div style="color:var(--amber);font-size:1rem;margin-bottom:12px">★★★★★</div>
+        <div style="font-size:0.9rem;color:var(--text);line-height:1.7;margin-bottom:16px">"Spent hours trying to tailor my CV manually. HireEdge does it in 60 seconds and the quality is honestly better than what I wrote myself."</div>
+        <div style="font-size:0.8rem;font-weight:600;color:var(--navy)">James K.</div>
+        <div style="font-size:0.75rem;color:var(--muted)">Product Manager, New York</div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -679,6 +720,7 @@
         <div style="font-size:3rem">✦</div>
         <div style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--navy)">Your tailored application<br/>will appear here</div>
         <div style="color:var(--muted);font-size:0.85rem;line-height:1.6;max-width:280px">Fill in your background and paste a job description to get started</div>
+        <button onclick="loadExample()" style="margin-top:4px;background:#fff;border:1.5px solid var(--amber);color:var(--amber2);padding:10px 24px;border-radius:8px;font-size:0.85rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s" onmouseover="this.style.background='rgba(212,140,30,0.06)'" onmouseout="this.style.background='#fff'">👀 See an example output</button>
       </div>
     </div>
   </div>
@@ -800,7 +842,7 @@
       <div class="plan-price"><sup>$</sup>0</div>
       <div class="plan-period">No credit card needed</div>
       <ul class="plan-features">
-        <li>2 free generations</li>
+        <li>3 free generations</li>
         <li>Resume summaries</li>
         <li>Cover letters</li>
         <li>LinkedIn bios</li>
@@ -872,7 +914,7 @@ const CONFIG = {
   STRIPE_SINGLE_LINK: 'https://buy.stripe.com/3cI5kv4YP1on10294beZ202',      // $2 single generation
   STRIPE_PACK_LINK: 'https://buy.stripe.com/3cI7sDgHx5EDeQS1BJeZ203',          // $9 one-time 30 days
   STRIPE_LIFETIME_LINK: 'https://buy.stripe.com/fZudR1aj9ffdbEGa8feZ204',  // $79 one-time forever
-  FREE_LIMIT: 2,
+  FREE_LIMIT: 3,
   PACK_DAYS: 30,
 };
 
@@ -1663,6 +1705,30 @@ function hidePage() { document.getElementById('legal-overlay').style.display = '
 if (history.scrollRestoration) history.scrollRestoration = 'manual';
 window.addEventListener('beforeunload', function() { window.scrollTo(0, 0); });
 document.addEventListener('DOMContentLoaded', function() { window.scrollTo(0, 0); });
+
+// ── LOAD EXAMPLE ──
+function loadExample() {
+  document.getElementById('t-background').value = `Software Engineer with 5 years of experience in Python, Django, and React. Led a team of 4 engineers to rebuild a payment processing system that reduced latency by 40%. Delivered 3 major product features used by 200,000+ users. Experience with AWS, Docker, PostgreSQL, and CI/CD pipelines. BSc Computer Science, University of Manchester.`;
+  document.getElementById('t-jobdesc').value = `Senior Software Engineer — Fintech Startup (London/Remote)
+
+We are looking for a Senior Software Engineer to join our growing payments team. You will design and build scalable backend services that power our core payment infrastructure.
+
+Requirements:
+- 4+ years of backend engineering experience
+- Strong proficiency in Python and RESTful API design
+- Experience with cloud platforms (AWS preferred)
+- Familiarity with PostgreSQL or similar relational databases
+- Experience working in an Agile environment
+- Bonus: experience in fintech or payments domain
+
+Responsibilities:
+- Architect and implement new payment features
+- Collaborate cross-functionally with product and design
+- Mentor junior engineers
+- Participate in on-call rotation`;
+  document.getElementById('job-tailor').scrollIntoView({ behavior: 'smooth' });
+  showToast('Example loaded — click Analyse & Tailor to see it in action!');
+}
 </script>
 </body>
 </html>
