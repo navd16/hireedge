@@ -458,8 +458,8 @@
   <div class="hero-glow"></div>
   <div class="hero-glow2"></div>
   <div class="eyebrow">Powered by AI</div>
-  <h1>Tailor your CV to <em>any job</em> in seconds</h1>
-  <p class="hero-sub" style="max-width:600px;margin:16px auto 0">Paste a job description and HireEdge tells you exactly how well you match — then rewrites your CV to get you to 90%+.</p>
+  <h1>Stop applying. Start <em>getting hired.</em></h1>
+  <p class="hero-sub" style="max-width:600px;margin:16px auto 0">HireEdge rewrites your CV for the job, predicts the questions they'll ask, and writes your outreach message. Everything a recruiter wants to see — done for you.</p>
 
   <!-- BEFORE/AFTER VISUAL -->
   <div style="display:flex;align-items:center;gap:12px;margin:32px 0 24px;animation:fadeUp 0.7s 0.25s ease both">
@@ -876,14 +876,56 @@
 
     <!-- INTERVIEW PREP TAB -->
     <div class="tool-card" id="tab-interview">
+
+      <!-- Auto-pull banner: shown when user has already tailored a CV -->
+      <div id="interview-autopull" style="display:none;background:linear-gradient(135deg,#eef4ff,#e8f0fe);border:1.5px solid rgba(28,43,74,0.12);border-radius:12px;padding:14px 18px;margin-bottom:24px;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="width:38px;height:38px;background:var(--navy);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0">✨</div>
+          <div>
+            <div style="font-size:0.85rem;font-weight:600;color:var(--navy)">CV already tailored!</div>
+            <div style="font-size:0.75rem;color:var(--muted);margin-top:2px">Auto-fill job description & background from your tailored CV — no retyping needed</div>
+          </div>
+        </div>
+        <button onclick="autoPullFromTailor()" style="background:var(--navy);color:#fff;border:none;border-radius:8px;padding:9px 18px;font-size:0.82rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;transition:background 0.2s" onmouseover="this.style.background='#253d6a'" onmouseout="this.style.background='var(--navy)'">Pull in →</button>
+      </div>
+
       <div class="form-grid">
         <div class="field full"><label>Job Description (paste the full posting)</label><textarea id="i-jobdesc" placeholder="Paste the job description here..." style="min-height:120px"></textarea></div>
         <div class="field full"><label>Your Background</label><textarea id="i-background" placeholder="e.g. 5 years as a software engineer, Python, led teams of 4, built payment systems..." style="min-height:80px"></textarea></div>
-        <div class="field"><label>Experience Level</label><select id="i-level"><option value="junior">Junior (0–2 yrs)</option><option value="mid" selected>Mid-level (3–5 yrs)</option><option value="senior">Senior (6+ yrs)</option></select></div>
+        <div class="field">
+          <label>Experience Level</label>
+          <select id="i-level">
+            <option value="junior">Junior (0–2 yrs)</option>
+            <option value="mid" selected>Mid-level (3–5 yrs)</option>
+            <option value="senior">Senior (6+ yrs)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Question Focus</label>
+          <select id="i-focus">
+            <option value="mixed">All Types (Mixed)</option>
+            <option value="behavioural">Behavioural</option>
+            <option value="technical">Technical</option>
+            <option value="leadership">Leadership</option>
+            <option value="salary">Salary & Negotiation</option>
+          </select>
+        </div>
       </div>
+
       <button class="generate-btn" id="interview-btn" onclick="generateInterview()"><span>🎤 Generate Interview Questions & Answers</span></button>
+
       <div class="output-area" id="interview-output" style="padding:0;background:transparent;border:none">
         <div class="loading-dots" id="interview-loading" style="padding:24px"><span></span><span></span><span></span></div>
+
+        <!-- Practice Mode bar — shown after generation -->
+        <div id="interview-mode-bar" style="display:none;align-items:center;justify-content:space-between;margin-bottom:20px;padding:14px 18px;background:#f9f7f4;border-radius:12px;border:1.5px solid var(--border)">
+          <div>
+            <div style="font-size:0.85rem;font-weight:600;color:var(--navy)">🎯 Practice Mode</div>
+            <div style="font-size:0.75rem;color:var(--muted);margin-top:2px">Hide answers — type your own first, then reveal & compare</div>
+          </div>
+          <button id="practice-toggle-btn" onclick="togglePracticeMode()" style="background:#e2e2e2;color:var(--muted);border:none;border-radius:100px;padding:8px 20px;font-size:0.8rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;min-width:72px">Off</button>
+        </div>
+
         <div id="interview-questions"></div>
       </div>
     </div>
@@ -996,8 +1038,15 @@
 <div class="divider"></div>
 
 <footer>
-  <div class="footer-logo">HireEdge AI</div>
-  <div class="footer-copy">© 2026 HireEdge AI · All rights reserved</div>
+  <div class="footer-logo">HireEdge <span>AI</span></div>
+  <div style="text-align:center">
+    <div class="footer-copy">© 2026 HireEdge AI · All rights reserved</div>
+    <div style="font-size:0.72rem;color:var(--muted);margin-top:6px;opacity:0.7">AI-generated content is for guidance only. Results may vary.</div>
+  </div>
+  <div class="footer-copy" style="display:flex;gap:20px">
+    <span onclick="openLegal('terms')" style="cursor:pointer;transition:color 0.2s" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color=''">Terms</span>
+    <span onclick="openLegal('privacy')" style="cursor:pointer;transition:color 0.2s" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color=''">Privacy</span>
+  </div>
 </footer>
 
 <script>
@@ -1146,6 +1195,7 @@ function switchTab(name, el) {
   document.querySelectorAll('.tool-card').forEach(c => c.classList.remove('active'));
   el.classList.add('active');
   document.getElementById('tab-' + name).classList.add('active');
+  if (name === 'interview') checkAutoPull();
 }
 
 // ── GENERATE ──
@@ -1799,6 +1849,7 @@ const termsContent = `<div class="legal-h1">Terms of Service</div><div class="le
 const privacyContent = `<div class="legal-h1">Privacy Policy</div><div class="legal-date">Last updated: March 2026</div><div class="legal-h2">1. What We Collect</div><p class="legal-p">Email for account creation, content you submit, payment data via Stripe. We do not store card details.</p><div class="legal-h2">2. How We Use It</div><p class="legal-p">To generate content, process payments, and provide support. We never sell your data.</p><div class="legal-h2">3. Third Parties</div><p class="legal-p">Anthropic (AI), Stripe (payments), Supabase (auth), Netlify (hosting).</p><div class="legal-h2">4. Contact</div><p class="legal-p"><a href="mailto:support@hireedgeai.com" style="color:var(--amber)">support@hireedgeai.com</a></p>`;
 
 function showPage(type) { document.getElementById('legal-content').innerHTML = type === 'terms' ? termsContent : privacyContent; document.getElementById('legal-overlay').style.display = 'block'; window.scrollTo(0,0); return false; }
+function openLegal(type) { showPage(type); }
 function hidePage() { document.getElementById('legal-overlay').style.display = 'none'; }
 
 // ── SCROLL TO TOP ON REFRESH ──
@@ -1807,6 +1858,51 @@ window.addEventListener('beforeunload', function() { window.scrollTo(0, 0); });
 document.addEventListener('DOMContentLoaded', function() { window.scrollTo(0, 0); });
 
 // ── INTERVIEW PREP ──
+
+function checkAutoPull() {
+  const jobdesc = document.getElementById('t-jobdesc')?.value?.trim();
+  const resumeText = document.getElementById('tailor-resume-text')?.textContent?.trim();
+  const banner = document.getElementById('interview-autopull');
+  if (!banner) return;
+  banner.style.display = (jobdesc && resumeText) ? 'flex' : 'none';
+}
+
+function autoPullFromTailor() {
+  const jobdesc = document.getElementById('t-jobdesc')?.value?.trim();
+  const resumeText = document.getElementById('tailor-resume-text')?.textContent?.trim();
+  if (jobdesc) document.getElementById('i-jobdesc').value = jobdesc;
+  if (resumeText) document.getElementById('i-background').value = resumeText.substring(0, 700);
+  document.getElementById('interview-autopull').style.display = 'none';
+  showToast('✓ Pulled from your tailored CV');
+}
+
+let practiceMode = false;
+function togglePracticeMode() {
+  practiceMode = !practiceMode;
+  const btn = document.getElementById('practice-toggle-btn');
+  btn.textContent = practiceMode ? 'On' : 'Off';
+  btn.style.background = practiceMode ? 'var(--navy)' : '#e2e2e2';
+  btn.style.color = practiceMode ? '#fff' : 'var(--muted)';
+  document.querySelectorAll('.i-answer-text').forEach(el => { el.style.display = practiceMode ? 'none' : 'block'; });
+  document.querySelectorAll('.i-practice-area').forEach(el => { el.style.display = practiceMode ? 'block' : 'none'; });
+  document.querySelectorAll('.i-copy-btn').forEach(el => { el.style.display = practiceMode ? 'none' : 'inline-block'; });
+  document.querySelectorAll('.i-reveal-btn').forEach(el => {
+    if (!el.disabled) el.style.display = practiceMode ? 'inline-block' : 'none';
+  });
+}
+
+function revealAnswer(btn) {
+  const card = btn.closest('.i-card');
+  const answerEl = card.querySelector('.i-answer-text');
+  const sep = card.querySelector('.i-answer-sep');
+  answerEl.style.display = 'block';
+  sep.style.display = 'block';
+  btn.textContent = '✓ Revealed';
+  btn.disabled = true;
+  btn.style.opacity = '0.5';
+  btn.style.cursor = 'default';
+}
+
 async function generateInterview() {
   gtag('event', 'generate_click', { event_category: 'engagement', tool: 'interview' });
   if (!canGenerate()) { openPaywall(); return; }
@@ -1814,6 +1910,7 @@ async function generateInterview() {
   const jobdesc = document.getElementById('i-jobdesc').value.trim();
   const background = document.getElementById('i-background').value.trim();
   const level = document.getElementById('i-level').value;
+  const focus = document.getElementById('i-focus').value;
 
   if (!jobdesc || !background) {
     alert('Please fill in both the job description and your background.');
@@ -1837,23 +1934,46 @@ async function generateInterview() {
   const output = document.getElementById('interview-output');
   const loading = document.getElementById('interview-loading');
   const questionsEl = document.getElementById('interview-questions');
+  const modeBar = document.getElementById('interview-mode-bar');
+
+  // Reset practice mode
+  practiceMode = false;
+  const toggleBtn = document.getElementById('practice-toggle-btn');
+  toggleBtn.textContent = 'Off';
+  toggleBtn.style.background = '#e2e2e2';
+  toggleBtn.style.color = 'var(--muted)';
 
   btn.disabled = true;
-  btn.innerHTML = '<div class="spinner"></div><span>Predicting questions...</span>';
+  btn.innerHTML = '<div class="spinner"></div><span>Predicting your questions...</span>';
   output.classList.add('visible');
   loading.classList.add('visible');
   questionsEl.innerHTML = '';
+  modeBar.style.display = 'none';
 
-  const prompt = `You are an expert interviewer and career coach. Based on this job description and candidate background, predict the top 5 interview questions the candidate will likely be asked, and write strong tailored answers. Return ONLY raw JSON — no markdown, no backticks.
+  const focusInstructions = {
+    mixed: 'Generate 5 varied questions: a mix of behavioural, situational, and role-specific to give a complete interview picture.',
+    behavioural: 'Generate 5 behavioural interview questions using the STAR method framework. Questions should start with "Tell me about a time..." or "Give me an example of..." — tailored to the specific role.',
+    technical: 'Generate 5 technical interview questions specific to the role\'s required skills, tools, and technical problem-solving. Make them specific to what\'s in the job description.',
+    leadership: 'Generate 5 leadership and management-focused interview questions covering team leadership, conflict resolution, stakeholder management, and driving results.',
+    salary: 'Generate 5 questions and talking points for salary and compensation discussions — covering expected salary, negotiation tactics, competing offers, and progression expectations.'
+  };
+
+  const prompt = `You are an expert interviewer and career coach. Based on this job description and candidate background, predict exactly 5 interview questions the candidate will likely be asked, and write strong tailored answers. Return ONLY raw JSON — no markdown, no backticks, no extra text.
 
 JOB DESCRIPTION: ${jobdesc}
 CANDIDATE BACKGROUND: ${background}
 EXPERIENCE LEVEL: ${level}
+FOCUS: ${focusInstructions[focus] || focusInstructions.mixed}
+
+Rules:
+- Questions must be specific to this role and this candidate — not generic
+- Answers must reference the candidate's background with specific examples and metrics where possible
+- Each answer should be 3–4 sentences, confident and concise
 
 Return this exact JSON:
 {
   "questions": [
-    { "question": "<specific interview question>", "why": "<one sentence: why they'll ask this>", "answer": "<strong 3-4 sentence answer using the candidate's background, with specific examples and numbers where possible>" },
+    { "question": "<specific interview question>", "why": "<one sentence: why they'll ask this>", "answer": "<strong 3-4 sentence answer using the candidate's background>" },
     { "question": "...", "why": "...", "answer": "..." },
     { "question": "...", "why": "...", "answer": "..." },
     { "question": "...", "why": "...", "answer": "..." },
@@ -1871,17 +1991,25 @@ Return this exact JSON:
 
     (parsed.questions || []).forEach((q, i) => {
       const card = document.createElement('div');
+      card.className = 'i-card';
       card.style.cssText = 'background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:24px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,0.04)';
       card.innerHTML = `
         <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:12px">
           <div style="background:var(--navy);color:#fff;font-family:'Playfair Display',serif;font-size:0.9rem;font-weight:700;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0">${i+1}</div>
           <div style="font-weight:600;color:var(--navy);font-size:0.95rem;line-height:1.4">${q.question}</div>
         </div>
-        <div style="background:#fffdf8;border-left:3px solid var(--amber);border-radius:0 8px 8px 0;padding:10px 14px;font-size:0.78rem;color:var(--muted);margin-bottom:12px;line-height:1.5">💡 ${q.why}</div>
-        <div style="font-size:0.85rem;color:var(--text);line-height:1.75">${q.answer}</div>
-        <button onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent).then(()=>showToast('Answer copied!'))" style="margin-top:10px;background:var(--surface2);border:1px solid var(--border);color:var(--muted);padding:5px 14px;border-radius:6px;font-size:0.75rem;cursor:pointer;font-family:'DM Sans',sans-serif">Copy Answer</button>`;
+        <div style="background:#fffdf8;border-left:3px solid var(--amber);border-radius:0 8px 8px 0;padding:10px 14px;font-size:0.78rem;color:var(--muted);margin-bottom:4px;line-height:1.5">💡 ${q.why}</div>
+        <div class="i-practice-area" style="display:none;margin-top:14px">
+          <textarea placeholder="Write your answer here before revealing the suggested one..." style="width:100%;min-height:100px;background:#f9f7f4;border:1.5px solid var(--border);border-radius:8px;padding:12px 14px;font-size:0.85rem;font-family:'DM Sans',sans-serif;resize:vertical;outline:none;line-height:1.6;color:var(--text);transition:border-color 0.2s,box-shadow 0.2s" onfocus="this.style.borderColor='var(--amber)';this.style.boxShadow='0 0 0 3px rgba(212,140,30,0.1)'" onblur="this.style.borderColor='var(--border)';this.style.boxShadow='none'"></textarea>
+          <button class="i-reveal-btn" onclick="revealAnswer(this)" style="margin-top:8px;background:var(--navy);color:#fff;border:none;border-radius:7px;padding:8px 18px;font-size:0.8rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background 0.2s" onmouseover="if(!this.disabled)this.style.background='#253d6a'" onmouseout="if(!this.disabled)this.style.background='var(--navy)'">Reveal Answer ↓</button>
+        </div>
+        <div class="i-answer-sep" style="display:none;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--amber);margin:12px 0 6px;font-weight:500">✦ Suggested Answer</div>
+        <div class="i-answer-text" style="font-size:0.85rem;color:var(--text);line-height:1.75;margin-top:12px">${q.answer}</div>
+        <button class="i-copy-btn" onclick="navigator.clipboard.writeText(this.closest('.i-card').querySelector('.i-answer-text').textContent.trim()).then(()=>showToast('Answer copied!'))" style="margin-top:10px;background:var(--surface2);border:1px solid var(--border);color:var(--muted);padding:5px 14px;border-radius:6px;font-size:0.75rem;cursor:pointer;font-family:'DM Sans',sans-serif;transition:color 0.2s,border-color 0.2s">Copy Answer</button>`;
       questionsEl.appendChild(card);
     });
+
+    modeBar.style.display = 'flex';
 
   } catch(err) {
     loading.classList.remove('visible');
