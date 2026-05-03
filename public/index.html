@@ -936,12 +936,12 @@
         <div class="loading-dots" id="interview-loading" style="padding:24px"><span></span><span></span><span></span></div>
 
         <!-- Practice Mode bar — shown after generation -->
-        <div id="interview-mode-bar" style="display:none;align-items:center;justify-content:space-between;margin-bottom:20px;padding:14px 18px;background:#f9f7f4;border-radius:12px;border:1.5px solid var(--border)">
+        <div id="interview-mode-bar" style="display:none;align-items:center;justify-content:space-between;margin-bottom:20px;padding:16px 20px;background:linear-gradient(135deg,#eef4ff,#f8faff);border-radius:12px;border:1.5px solid #c2d6f8">
           <div>
-            <div style="font-size:0.85rem;font-weight:600;color:var(--navy)">🎯 Practice Mode</div>
-            <div style="font-size:0.75rem;color:var(--muted);margin-top:2px">Hide answers — type your own first, then reveal & compare</div>
+            <div style="font-size:0.85rem;font-weight:600;color:#1a3a6b">🎯 Practice Mode</div>
+            <div style="font-size:0.75rem;color:#5a7ab5;margin-top:2px">Hide answers — type your own first, then reveal & compare</div>
           </div>
-          <button id="practice-toggle-btn" onclick="togglePracticeMode()" style="background:#e2e2e2;color:var(--muted);border:none;border-radius:100px;padding:8px 20px;font-size:0.8rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;min-width:72px">Off</button>
+          <button id="practice-toggle-btn" onclick="togglePracticeMode()" style="background:#fff;color:#1a3a6b;border:1.5px solid #c2d6f8;border-radius:100px;padding:8px 20px;font-size:0.8rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;min-width:72px">Off</button>
         </div>
 
         <div id="interview-questions"></div>
@@ -1907,8 +1907,9 @@ function togglePracticeMode() {
   practiceMode = !practiceMode;
   const btn = document.getElementById('practice-toggle-btn');
   btn.textContent = practiceMode ? 'On' : 'Off';
-  btn.style.background = practiceMode ? 'var(--navy)' : '#e2e2e2';
-  btn.style.color = practiceMode ? '#fff' : 'var(--muted)';
+  btn.style.background = practiceMode ? '#1a3a6b' : '#fff';
+  btn.style.color = practiceMode ? '#fff' : '#1a3a6b';
+  btn.style.borderColor = practiceMode ? '#1a3a6b' : '#c2d6f8';
   document.querySelectorAll('.i-answer-text').forEach(el => { el.style.display = practiceMode ? 'none' : 'block'; });
   document.querySelectorAll('.i-practice-area').forEach(el => { el.style.display = practiceMode ? 'block' : 'none'; });
   document.querySelectorAll('.i-copy-btn').forEach(el => { el.style.display = practiceMode ? 'none' : 'inline-block'; });
