@@ -1227,13 +1227,30 @@ function goToTab(name) {
     switchTab(name, tabBtn);
     document.getElementById('generator').scrollIntoView({ behavior: 'smooth', block: 'start' });
     if (name === 'interview') {
-      const jobdesc = document.getElementById('t-jobdesc')?.value?.trim();
-      const resumeText = document.getElementById('tailor-resume-text')?.textContent?.trim();
-      if (jobdesc && resumeText) {
-        document.getElementById('i-jobdesc').value = jobdesc;
-        document.getElementById('i-background').value = resumeText.substring(0, 700);
+      // Priority 1: CV Tailor data
+      const tailorJobdesc = document.getElementById('t-jobdesc')?.value?.trim();
+      const tailorResume = document.getElementById('tailor-resume-text')?.textContent?.trim();
+      if (tailorJobdesc && tailorResume) {
+        document.getElementById('i-jobdesc').value = tailorJobdesc;
+        document.getElementById('i-background').value = tailorResume.substring(0, 700);
         document.getElementById('interview-autopull').style.display = 'none';
-        showToast('✓ Job details pulled in — ready to generate');
+        showToast('✓ Pulled from your tailored CV — ready to generate');
+        return;
+      }
+      // Priority 2: Resume Summary tab fields
+      const rTitle = document.getElementById('r-title')?.value?.trim();
+      const rExp = document.getElementById('r-exp')?.value?.trim();
+      const rSkills = document.getElementById('r-skills')?.value?.trim();
+      const rAchievements = document.getElementById('r-achievements')?.value?.trim();
+      if (rTitle || rSkills || rAchievements) {
+        let bg = '';
+        if (rTitle) bg += `${rTitle}`;
+        if (rExp) bg += ` with ${rExp} years of experience`;
+        if (rSkills) bg += `. Skills: ${rSkills}`;
+        if (rAchievements) bg += `. ${rAchievements}`;
+        document.getElementById('i-background').value = bg.trim();
+        showToast('✓ Background pulled in — paste a job description to continue');
+        return;
       }
     }
   }
