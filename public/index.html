@@ -945,7 +945,9 @@
             <div style="font-size:0.85rem;font-weight:600;color:#1a3a6b">🎯 Practice Mode</div>
             <div style="font-size:0.75rem;color:#5a7ab5;margin-top:2px">Hide answers — type your own first, then reveal & compare</div>
           </div>
-          <button id="practice-toggle-btn" onclick="togglePracticeMode()" style="background:#fff;color:#1a3a6b;border:1.5px solid #c2d6f8;border-radius:100px;padding:8px 20px;font-size:0.8rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;min-width:72px">Off</button>
+          <div id="practice-toggle-btn" onclick="togglePracticeMode()" style="width:52px;height:28px;background:#e2e2e2;border-radius:100px;cursor:pointer;position:relative;transition:background 0.3s;flex-shrink:0">
+            <div id="practice-toggle-knob" style="width:22px;height:22px;background:#fff;border-radius:50%;position:absolute;top:3px;left:3px;transition:transform 0.3s;box-shadow:0 1px 4px rgba(0,0,0,0.25)"></div>
+          </div>
         </div>
 
         <div id="interview-questions"></div>
@@ -1938,10 +1940,8 @@ let practiceMode = false;
 function togglePracticeMode() {
   practiceMode = !practiceMode;
   const btn = document.getElementById('practice-toggle-btn');
-  btn.textContent = practiceMode ? 'On' : 'Off';
-  btn.style.background = practiceMode ? '#1a3a6b' : '#fff';
-  btn.style.color = practiceMode ? '#fff' : '#1a3a6b';
-  btn.style.borderColor = practiceMode ? '#1a3a6b' : '#c2d6f8';
+  btn.style.background = practiceMode ? '#1a3a6b' : '#e2e2e2';
+  document.getElementById('practice-toggle-knob').style.transform = practiceMode ? 'translateX(24px)' : 'translateX(0)';
   document.querySelectorAll('.i-card').forEach(card => {
     const revealed = card.dataset.revealed === 'true';
     const answerEl = card.querySelector('.i-answer-text');
@@ -2070,10 +2070,8 @@ async function generateInterview() {
 
   // Reset practice mode
   practiceMode = false;
-  const toggleBtn = document.getElementById('practice-toggle-btn');
-  toggleBtn.textContent = 'Off';
-  toggleBtn.style.background = '#e2e2e2';
-  toggleBtn.style.color = 'var(--muted)';
+  document.getElementById('practice-toggle-btn').style.background = '#e2e2e2';
+  document.getElementById('practice-toggle-knob').style.transform = 'translateX(0)';
 
   btn.disabled = true;
   btn.innerHTML = '<div class="spinner"></div><span>Predicting your questions...</span>';
@@ -2158,6 +2156,7 @@ Return this exact JSON:
     });
 
     modeBar.style.display = 'flex';
+    togglePracticeMode(); // ON by default — answers blurred from the start
 
   } catch(err) {
     loading.classList.remove('visible');
