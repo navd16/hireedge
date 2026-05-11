@@ -945,8 +945,9 @@
             <div style="font-size:0.85rem;font-weight:600;color:#1a3a6b">🎯 Practice Mode</div>
             <div style="font-size:0.75rem;color:#5a7ab5;margin-top:2px">Hide answers — type your own first, then reveal & compare</div>
           </div>
-          <div id="practice-toggle-btn" onclick="togglePracticeMode()" style="width:52px;height:28px;background:#e2e2e2;border-radius:100px;cursor:pointer;position:relative;transition:background 0.3s;flex-shrink:0">
-            <div id="practice-toggle-knob" style="width:22px;height:22px;background:#fff;border-radius:50%;position:absolute;top:3px;left:3px;transition:transform 0.3s;box-shadow:0 1px 4px rgba(0,0,0,0.25)"></div>
+          <div style="display:flex;background:#e8f0fe;border-radius:8px;padding:3px;gap:3px;flex-shrink:0">
+            <button id="practice-btn-off" onclick="if(practiceMode)togglePracticeMode()" style="padding:6px 16px;border-radius:6px;border:none;font-size:0.8rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;background:transparent;color:#5a7ab5">Off</button>
+            <button id="practice-btn-on" onclick="if(!practiceMode)togglePracticeMode()" style="padding:6px 16px;border-radius:6px;border:none;font-size:0.8rem;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;background:#1a3a6b;color:#fff">On</button>
           </div>
         </div>
 
@@ -1940,8 +1941,10 @@ let practiceMode = false;
 function togglePracticeMode() {
   practiceMode = !practiceMode;
   const btn = document.getElementById('practice-toggle-btn');
-  btn.style.background = practiceMode ? '#1a3a6b' : '#e2e2e2';
-  document.getElementById('practice-toggle-knob').style.transform = practiceMode ? 'translateX(24px)' : 'translateX(0)';
+  document.getElementById('practice-btn-on').style.background = practiceMode ? '#1a3a6b' : 'transparent';
+  document.getElementById('practice-btn-on').style.color = practiceMode ? '#fff' : '#5a7ab5';
+  document.getElementById('practice-btn-off').style.background = practiceMode ? 'transparent' : '#1a3a6b';
+  document.getElementById('practice-btn-off').style.color = practiceMode ? '#5a7ab5' : '#fff';
   document.querySelectorAll('.i-card').forEach(card => {
     const revealed = card.dataset.revealed === 'true';
     const answerEl = card.querySelector('.i-answer-text');
@@ -2070,8 +2073,10 @@ async function generateInterview() {
 
   // Reset practice mode
   practiceMode = false;
-  document.getElementById('practice-toggle-btn').style.background = '#e2e2e2';
-  document.getElementById('practice-toggle-knob').style.transform = 'translateX(0)';
+  document.getElementById('practice-btn-on').style.background = 'transparent';
+  document.getElementById('practice-btn-on').style.color = '#5a7ab5';
+  document.getElementById('practice-btn-off').style.background = '#1a3a6b';
+  document.getElementById('practice-btn-off').style.color = '#fff';
 
   btn.disabled = true;
   btn.innerHTML = '<div class="spinner"></div><span>Predicting your questions...</span>';
