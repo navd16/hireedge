@@ -457,7 +457,7 @@
 <div class="hero" style="text-align:center">
   <div class="hero-glow"></div>
   <div class="hero-glow2"></div>
-  <div class="eyebrow">Powered by AI</div>
+  <div class="eyebrow">✦ CV Tailoring · Interview Prep · LinkedIn Outreach</div>
   <h1>Stop applying. Start <em>getting hired.</em></h1>
   <p class="hero-sub" style="max-width:600px;margin:16px auto 0">HireEdge rewrites your CV for the job, predicts the questions they'll ask, and writes your outreach message. Everything a recruiter wants to see — done for you.</p>
 
@@ -492,23 +492,24 @@
 
   <!-- FEATURE PILLS -->
   <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:32px;animation:fadeUp 0.7s 0.35s ease both">
-    <span style="background:#fff;border:1px solid var(--border);border-radius:100px;padding:6px 14px;font-size:0.78rem;color:var(--navy);font-weight:500;box-shadow:0 2px 8px rgba(0,0,0,0.05)">🎯 ATS Match Score</span>
-    <span style="background:#fff;border:1px solid var(--border);border-radius:100px;padding:6px 14px;font-size:0.78rem;color:var(--navy);font-weight:500;box-shadow:0 2px 8px rgba(0,0,0,0.05)">🔑 Missing Keywords</span>
-    <span style="background:#fff;border:1px solid var(--border);border-radius:100px;padding:6px 14px;font-size:0.78rem;color:var(--navy);font-weight:500;box-shadow:0 2px 8px rgba(0,0,0,0.05)">✏️ Bullet Point Fixes</span>
+    <span style="background:var(--navy);border:1px solid var(--navy);border-radius:100px;padding:6px 14px;font-size:0.78rem;color:#fff;font-weight:500;box-shadow:0 2px 8px rgba(28,43,74,0.2)">🎤 Interview Prep</span>
+    <span style="background:rgba(212,140,30,0.1);border:1px solid rgba(212,140,30,0.3);border-radius:100px;padding:6px 14px;font-size:0.78rem;color:var(--amber2);font-weight:500;box-shadow:0 2px 8px rgba(0,0,0,0.04)">🎯 ATS Match Score</span>
     <span style="background:#fff;border:1px solid var(--border);border-radius:100px;padding:6px 14px;font-size:0.78rem;color:var(--navy);font-weight:500;box-shadow:0 2px 8px rgba(0,0,0,0.05)">📄 Tailored Resume</span>
     <span style="background:#fff;border:1px solid var(--border);border-radius:100px;padding:6px 14px;font-size:0.78rem;color:var(--navy);font-weight:500;box-shadow:0 2px 8px rgba(0,0,0,0.05)">💌 Cover Letter</span>
+    <span style="background:#fff;border:1px solid var(--border);border-radius:100px;padding:6px 14px;font-size:0.78rem;color:var(--navy);font-weight:500;box-shadow:0 2px 8px rgba(0,0,0,0.05)">🔑 Missing Keywords</span>
+    <span style="background:#fff;border:1px solid var(--border);border-radius:100px;padding:6px 14px;font-size:0.78rem;color:var(--navy);font-weight:500;box-shadow:0 2px 8px rgba(0,0,0,0.05)">✏️ Bullet Point Fixes</span>
     <span style="background:#fff;border:1px solid var(--border);border-radius:100px;padding:6px 14px;font-size:0.78rem;color:var(--navy);font-weight:500;box-shadow:0 2px 8px rgba(0,0,0,0.05)">⬇ Word Doc Download</span>
-    <span style="background:#fff;border:1px solid var(--border);border-radius:100px;padding:6px 14px;font-size:0.78rem;color:var(--navy);font-weight:500;box-shadow:0 2px 8px rgba(0,0,0,0.05)">🎤 Interview Prep</span>
     <span style="background:#fff;border:1px solid var(--border);border-radius:100px;padding:6px 14px;font-size:0.78rem;color:var(--navy);font-weight:500;box-shadow:0 2px 8px rgba(0,0,0,0.05)">🔗 LinkedIn Outreach</span>
   </div>
 
   <div class="hero-cta">
-    <button class="btn-primary" onclick="document.getElementById('job-tailor').scrollIntoView({behavior:'smooth'})">Tailor My CV Now →</button>
-    <button class="btn-outline" onclick="document.getElementById('how-it-works').scrollIntoView({behavior:'smooth'})">See How It Works</button>
+    <button class="btn-primary" onclick="document.getElementById('job-tailor').scrollIntoView({behavior:'smooth'})">✦ Tailor My CV →</button>
+    <button class="btn-outline" onclick="goToTab('interview');document.getElementById('generator').scrollIntoView({behavior:'smooth'})">🎤 Prep For Interview →</button>
   </div>
   <div class="hero-stats">
-    <div class="stat"><div class="stat-num">Free</div><div class="stat-label">3 Generations</div></div>
+    <div class="stat"><div class="stat-num">Free</div><div class="stat-label">To Get Started</div></div>
     <div class="stat"><div class="stat-num">60s</div><div class="stat-label">To Tailor Your CV</div></div>
+    <div class="stat"><div class="stat-num">5</div><div class="stat-label">Interview Questions</div></div>
     <div class="stat"><div class="stat-num">ATS</div><div class="stat-label">Score + Fix</div></div>
   </div>
 </div>
@@ -632,7 +633,7 @@
       </div>
       <div style="background:#fff;border:1.5px solid var(--border);border-radius:16px;padding:28px 24px;text-align:left;box-shadow:0 2px 12px rgba(0,0,0,0.04)">
         <div style="color:var(--amber);font-size:1rem;margin-bottom:12px">★★★★★</div>
-        <div style="font-size:0.9rem;color:var(--text);line-height:1.7;margin-bottom:16px">"Spent hours trying to tailor my CV manually. HireEdge does it in 60 seconds and the quality is honestly better than what I wrote myself."</div>
+        <div style="font-size:0.9rem;color:var(--text);line-height:1.7;margin-bottom:16px">"The interview questions were spot on — two of them came up almost word for word. Walked in feeling prepared for the first time in years."</div>
         <div style="font-size:0.8rem;font-weight:600;color:var(--navy)">James K.</div>
         <div style="font-size:0.75rem;color:var(--muted)">Product Manager, New York</div>
       </div>
