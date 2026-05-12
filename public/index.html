@@ -398,6 +398,7 @@
       <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:14px">
         <span style="font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:900;color:var(--navy)">$9</span>
         <span style="color:var(--muted);font-size:0.85rem">one-time &middot; no subscription</span>
+        <div id="paywall-pack-local" style="font-size:0.75rem;color:var(--muted);margin-top:2px;width:100%"></div>
       </div>
       <button class="plan-btn plan-btn-gold" onclick="checkout('pack')" style="padding:14px;font-size:0.95rem;width:100%">Get Full Access &#8212; $9 &#x2192;</button>
     </div>
@@ -412,11 +413,13 @@
       <button onclick="checkout('single')" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px;cursor:pointer;font-family:'DM Sans',sans-serif;text-align:center">
         <div style="font-size:0.72rem;color:var(--muted);margin-bottom:4px;letter-spacing:0.04em">SINGLE USE</div>
         <div style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--navy)">$2</div>
+        <div id="paywall-single-local" style="font-size:0.7rem;color:var(--muted)"></div>
         <div style="font-size:0.75rem;color:var(--muted)">1 generation</div>
       </button>
       <button onclick="checkout('lifetime')" style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px;cursor:pointer;font-family:'DM Sans',sans-serif;text-align:center">
         <div style="font-size:0.72rem;color:var(--muted);margin-bottom:4px;letter-spacing:0.04em">LIFETIME</div>
         <div style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--navy)">$79</div>
+        <div id="paywall-lifetime-local" style="font-size:0.7rem;color:var(--muted)"></div>
         <div style="font-size:0.75rem;color:var(--muted)">use forever</div>
       </button>
     </div>
@@ -1021,6 +1024,7 @@
     <div class="price-card">
       <div class="plan-name">Single Use</div>
       <div class="plan-price"><sup>$</sup>2</div>
+      <div id="price-single-local" style="font-size:0.75rem;color:var(--muted);margin-top:6px;margin-bottom:8px"></div>
       <div class="plan-period">One-time · 1 generation</div>
       <ul class="plan-features">
         <li>1 generation credit</li>
@@ -1037,6 +1041,7 @@
       <div class="featured-badge">Best for Job Seekers</div>
       <div class="plan-name">30-Day Pack</div>
       <div class="plan-price"><sup>$</sup>9</div>
+      <div id="price-pack-local" style="font-size:0.75rem;color:var(--muted);margin-top:6px;margin-bottom:8px"></div>
       <div class="plan-period">One-time · 30 days full access</div>
       <ul class="plan-features">
         <li>Unlimited generations</li>
@@ -1052,6 +1057,7 @@
     <div class="price-card">
       <div class="plan-name">Lifetime</div>
       <div class="plan-price"><sup>$</sup>79</div>
+      <div id="price-lifetime-local" style="font-size:0.75rem;color:var(--muted);margin-top:6px;margin-bottom:8px"></div>
       <div class="plan-period">One-time · use forever</div>
       <ul class="plan-features">
         <li>Everything in the Pack</li>
@@ -2177,6 +2183,57 @@ Return this exact JSON:
     btn.innerHTML = '<span>🎤 Generate Interview Questions & Answers</span>';
   }
 }
+
+// ── LOCAL CURRENCY ──
+function showLocalCurrency() {
+  try {
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const map = {
+      'Asia/Kolkata':            { s: '₹',    r: 83,    d: 0 },
+      'Asia/Calcutta':           { s: '₹',    r: 83,    d: 0 },
+      'Asia/Karachi':            { s: '₨',    r: 278,   d: 0 },
+      'Asia/Dhaka':              { s: '৳',    r: 110,   d: 0 },
+      'Asia/Dubai':              { s: 'AED',  r: 3.67,  d: 0 },
+      'Asia/Muscat':             { s: 'AED',  r: 3.67,  d: 0 },
+      'Asia/Singapore':          { s: 'S$',   r: 1.34,  d: 2 },
+      'Asia/Kuala_Lumpur':       { s: 'RM',   r: 4.71,  d: 0 },
+      'Asia/Manila':             { s: '₱',    r: 56,    d: 0 },
+      'Asia/Bangkok':            { s: '฿',    r: 36,    d: 0 },
+      'Asia/Jakarta':            { s: 'Rp',   r: 16300, d: 0 },
+      'Europe/London':           { s: '£',    r: 0.79,  d: 2 },
+      'Africa/Lagos':            { s: '₦',    r: 1580,  d: 0 },
+      'Africa/Johannesburg':     { s: 'R',    r: 18.5,  d: 0 },
+      'Pacific/Auckland':        { s: 'NZ$',  r: 1.65,  d: 2 },
+      'America/Sao_Paulo':       { s: 'R$',   r: 5.7,   d: 2 },
+      'America/Mexico_City':     { s: 'MX$',  r: 19.5,  d: 0 },
+    };
+
+    let c = map[tz];
+    if (!c) {
+      if (tz.startsWith('Europe/'))    c = { s: '€',   r: 0.92, d: 2 };
+      else if (tz.startsWith('Australia/')) c = { s: 'A$',  r: 1.53, d: 2 };
+      else if (tz.startsWith('America/Toronto') || tz.startsWith('America/Vancouver') ||
+               tz.startsWith('America/Edmonton') || tz.startsWith('America/Winnipeg') ||
+               tz.startsWith('America/Halifax') || tz.startsWith('America/Montreal'))
+                                        c = { s: 'C$',  r: 1.36, d: 2 };
+    }
+    if (!c) return; // USA or unknown — show USD only
+
+    const fmt = (usd) => {
+      const val = usd * c.r;
+      const num = c.d > 0 ? val.toFixed(c.d) : Math.round(val).toLocaleString();
+      return `Approximately ${c.s}${num}`;
+    };
+
+    [['price-single-local', 2], ['price-pack-local', 9], ['price-lifetime-local', 79],
+     ['paywall-pack-local', 9], ['paywall-single-local', 2], ['paywall-lifetime-local', 79]]
+      .forEach(([id, usd]) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = fmt(usd);
+      });
+  } catch(e) {}
+}
+showLocalCurrency();
 
 // ── LOAD EXAMPLE ──
 function loadExample() {
