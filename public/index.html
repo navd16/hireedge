@@ -1307,6 +1307,7 @@ updateUsageDisplay();
 function openPaywall() {
   try { if (!currentUser) { openAuth('signup', 'pack'); return; } } catch(e) {}
   document.getElementById('paywall').classList.add('open');
+  gtag('event', 'paywall_shown', { event_category: 'monetisation' });
 }
 function closePaywall() { document.getElementById('paywall').classList.remove('open'); }
 
@@ -2685,6 +2686,7 @@ Return this exact JSON:
 }
 
 function renderMockScorecard(d) {
+  gtag('event', 'mock_scorecard_viewed', { event_category: 'engagement' });
   const overall = Math.min(10, Math.max(1, d.overall_score || 5));
   const overallColor = overall >= 8 ? '#1e9e5e' : overall >= 5 ? 'var(--amber2)' : '#c0392b';
 
